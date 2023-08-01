@@ -10,18 +10,11 @@ FILES.forEach((filePath) => {
   const originalCode = code;
 
   try {
-    // 🧼 Xoá dòng console
     code = code.replace(/^\s*console\.[a-z]+\([^;]*\);?\s*$/gm, '');
-
-    // 🧼 Xoá dòng debugger
     code = code.replace(/^\s*debugger;?\s*$/gm, '');
-
-    // 🧼 Xoá comment (trừ comment chứa https://)
-    code = code.replace(/^\s*\/\/(?!\s*https?:\/\/).*$/gm, ''); // dòng comment //
-    code = code.replace(/\/\*[^]*?\*\//gm, ''); // comment /* */
-
+    code = code.replace(/^\s*\/\/(?!\s*https?:\/\/).*$/gm, '');
+    code = code.replace(/\/\*[^]*?\*\//gm, '');
     code = code.replace(/\n{3,}/g, '\n\n');
-
     if (code !== originalCode) {
       fs.writeFileSync(filePath, code, 'utf8');
       console.log(`🧼 Cleaned: ${path.relative(process.cwd(), filePath)}`);
