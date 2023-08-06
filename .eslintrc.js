@@ -1,6 +1,11 @@
 module.exports = {
-    extends: ['react-app', 'react-app/jest', 'plugin:prettier/recommended'],
-    rules: {
-      'prettier/prettier': ['error'],
-    },
-  };
+  root: true,
+  parser: '@typescript-eslint/parser',
+  plugins: ['@typescript-eslint'],
+  extends: ['eslint:recommended', 'plugin:@typescript-eslint/recommended', 'prettier'],
+  rules: {
+    'no-console': 'error',
+    'no-debugger': 'error',
+    '@typescript-eslint/no-unused-vars': 'error',
+  },
+};

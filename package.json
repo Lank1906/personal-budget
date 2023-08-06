@@ -26,12 +26,6 @@
     "lint": "eslint \"src/**/*.{ts,tsx,js,jsx}\"",
     "format": "prettier --write \"src/**/*.{ts,tsx,js,jsx,json,css,md}\""
   },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
-  },
   "browserslist": {
     "production": [
       ">0.2%",
@@ -45,14 +39,17 @@
     ]
   },
   "devDependencies": {
+    "@babel/parser": "^7.28.0",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-prettier": "^5.5.3",
     "husky": "^8.0.0",
     "lint-staged": "^16.1.2",
-    "prettier": "^3.6.2"
+    "prettier": "^3.6.2",
+    "recast": "^0.23.11"
   },
   "lint-staged": {
     "src/**/*.{js,jsx,ts,tsx}": [
+      "node scripts/clean-code.js",
       "eslint --fix",
       "prettier --write"
     ]
