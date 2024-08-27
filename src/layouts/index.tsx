@@ -15,6 +15,7 @@ import Copyright from '../components/copyright';
 import { AppDispatch } from '../store';
 import { useDispatch } from 'react-redux';
 import { logout } from '../store/slices/userSlice';
+import ChangeLanguage from '../components/changeLanguage';
 
 const MainLayout = () => {
   const location = useLocation();
@@ -131,6 +132,7 @@ const MainLayout = () => {
               })}
             </Breadcrumbs>
             <Box>
+              <ChangeLanguage />
               <IconButton onClick={toggleColorMode} sx={{ color: 'text.primary' }}>
                 {mode === 'light' ? <Brightness7 /> : <Brightness4 />}
               </IconButton>
