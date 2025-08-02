@@ -1,5 +1,5 @@
 # 💰 Trình Quản Lý Chi Tiêu Cá Nhân
-
+*(English version available below)*
 ## 🧭 Tổng Quan Dự Án
 
 **Trình Quản Lý Chi Tiêu Cá Nhân** là một ứng dụng web đơn giản, nhẹ và dễ sử dụng giúp người dùng quản lý chi tiêu hàng ngày một cách nhanh chóng và riêng tư. Ứng dụng này hoạt động trực tiếp trên trình duyệt mà **không cần đăng ký tài khoản, không cần kết nối server hay cài đặt**.
@@ -83,6 +83,8 @@ cd quan-ly-chi-tieu
 
 # Mở file index.html bằng trình duyệt
 open index.html
+
+---
 
 ## 🔐 Chính Sách Dữ Liệu
  - Không yêu cầu đăng ký, không phân tích hành vi người dùng.
@@ -183,6 +185,8 @@ cd personal-expense-tracker
 
 # Open in your browser
 open index.html
+
+---
 
 ## 🔐 Data Privacy
  - No login required
