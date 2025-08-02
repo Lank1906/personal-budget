@@ -83,7 +83,7 @@ cd quan-ly-chi-tieu
 
 # Mở file index.html bằng trình duyệt
 open index.html
-
+```
 ---
 
 ## 🔐 Chính Sách Dữ Liệu
@@ -185,7 +185,7 @@ cd personal-expense-tracker
 
 # Open in your browser
 open index.html
-
+```
 ---
 
 ## 🔐 Data Privacy
