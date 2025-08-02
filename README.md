@@ -84,15 +84,15 @@ cd quan-ly-chi-tieu
 # Mở file index.html bằng trình duyệt
 open index.html
 
-🔐 Chính Sách Dữ Liệu
+## 🔐 Chính Sách Dữ Liệu
  - Không yêu cầu đăng ký, không phân tích hành vi người dùng.
  - Không gửi dữ liệu lên server nếu không dùng Firebase.
  - Ưu tiên quyền riêng tư và bảo mật thông tin cá nhân.
 
-📄 Giấy Phép
+## 📄 Giấy Phép
  - Dự án này được phát hành theo giấy phép MIT License.
 
-👤 Tác Giả
+## 👤 Tác Giả
  - Dự án được lên ý tưởng và thiết kế bởi một Business Analyst, với mong muốn cung cấp một công cụ tài chính đơn giản, hữu ích và thân thiện với người dùng phổ thông.
 
 ---
@@ -184,13 +184,13 @@ cd personal-expense-tracker
 # Open in your browser
 open index.html
 
-🔐 Data Privacy
+## 🔐 Data Privacy
  - No login required
  - No tracking or analytics tools by default
  - Local data storage only unless using Firebase
 
-📄 License
+## 📄 License
 This project is licensed under the MIT License.
 
-👤 About the Author
+## 👤 About the Author
 This project was initiated by a Business Analyst who is passionate about user-friendly tools and helping people make better financial decisions with simple, transparent software.
