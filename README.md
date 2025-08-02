@@ -101,7 +101,6 @@ open index.html
 
 ## 🇺🇸 **README in English**
 
-```markdown
 # 💰 Personal Expense Tracker
 
 ## 🧭 Project Overview
