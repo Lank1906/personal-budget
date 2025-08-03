@@ -68,9 +68,9 @@ Dự án này hướng tới việc tạo ra một **công cụ đơn giản, nh
 
 ## ⚙️ Công Nghệ Sử Dụng
 
-- **Frontend**: HTML, CSS, JavaScript (hoặc React)
-- **Lưu trữ**: `localStorage`, Firebase Firestore (tuỳ chọn)
-- **Triển khai**: GitHub Pages, Netlify hoặc Vercel
+- **Frontend**: HTML, CSS, JavaScript, React, TypeScript
+- **Lưu trữ**: `localStorage`, Firebase Firestore
+- **Triển khai**: GitHub Pages
 
 ---
 
@@ -169,8 +169,8 @@ This project aims to provide a **free, simple, fast, and private** solution to h
 
 ## ⚙️ Tech Stack
 
-- **Frontend**: HTML, CSS, JavaScript (or optionally React)
-- **Storage**: `localStorage`, Firebase Firestore (optional)
+- **Frontend**: HTML, CSS, JavaScript, React, TypeScript
+- **Storage**: `localStorage`, Firebase Firestore
 - **Hosting**: GitHub Pages, Netlify, or Vercel
 
 ---
