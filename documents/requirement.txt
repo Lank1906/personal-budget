@@ -1,0 +1,214 @@
+🧾 TÀI LIỆU YÊU CẦU NGƯỜI DÙNG (URD)
+(English version available below)
+Tên sản phẩm: Personal Budget - Ứng dụng quản lý ngân sách cá nhân
+Ngày tạo: 03/08/2025
+Người tạo: Lank1906
+Phiên bản: 1.0
+
+1. GIỚI THIỆU
+1.1 Mục tiêu của hệ thống
+Ứng dụng Personal Budget giúp người dùng quản lý tài chính cá nhân một cách dễ dàng. Mục tiêu chính:
+
+- Theo dõi thu nhập và chi tiêu hàng ngày
+- Lập ngân sách theo tháng, theo danh mục
+- Phân tích và báo cáo tình hình tài chính
+- Gợi ý cách tiết kiệm và phân bổ chi tiêu hợp lý
+
+1.2 Đối tượng sử dụng
+- Người đi làm muốn quản lý chi tiêu cá nhân
+- Sinh viên muốn kiểm soát tiền tiêu vặt và học bổng
+- Gia đình nhỏ muốn kiểm soát chi phí hàng tháng
+
+2. PHẠM VI DỰ ÁN
+Ứng dụng sẽ triển khai dưới dạng mobile app (iOS/Android) với các chức năng chính:
+
+- Đăng ký/Đăng nhập
+- Thêm giao dịch (thu nhập/chi tiêu)
+- Gán danh mục, ghi chú, ngày tháng
+- Tạo và theo dõi ngân sách
+- Xem biểu đồ tài chính
+- Gợi ý tài chính theo dữ liệu cá nhân
+
+3. YÊU CẦU NGƯỜI DÙNG
+3.1 Nhân vật người dùng (User Personas)
+Nhân vật	                |   Mô tả
+Minh (25 tuổi)	            | Nhân viên văn phòng, thu nhập ổn định, muốn tiết kiệm để mua nhà
+Hạnh (21 tuổi)	            | Sinh viên, sống bằng tiền cha mẹ chu cấp, cần kiểm soát chi tiêu hàng tháng
+Tuấn và Hoa (30 và 28 tuổi)	| Vợ chồng trẻ có con nhỏ, cần quản lý ngân sách gia đình
+
+3.2 Chức năng chính theo người dùng
+🎯 1. Đăng ký và xác thực người dùng
+- Người dùng có thể đăng ký tài khoản bằng email/số điện thoại hoặc đăng nhập với Google/Facebook/Apple
+- Có tính năng quên mật khẩu và xác thực OTP
+
+🎯 2. Ghi chép giao dịch
+- Người dùng có thể thêm giao dịch thu nhập hoặc chi tiêu
+- Có thể gán danh mục (ăn uống, giải trí, đi lại...)
+- Giao dịch có thể có: mô tả, hình ảnh biên lai, thời gian, ví (tiền mặt, thẻ ngân hàng)
+
+🎯 3. Quản lý ngân sách
+- Người dùng có thể tạo ngân sách hàng tháng theo danh mục (VD: ăn uống max 3 triệu)
+- Ứng dụng sẽ cảnh báo nếu người dùng sắp vượt ngân sách
+
+🎯 4. Xem báo cáo tài chính
+- Hiển thị biểu đồ tròn phân tích chi tiêu theo danh mục
+- Biểu đồ cột theo thời gian (tuần/tháng/năm)
+- Báo cáo tổng thu - chi - số dư
+
+🎯 5. Gợi ý tiết kiệm
+- Ứng dụng đưa ra gợi ý: danh mục nào chi tiêu quá nhiều
+- So sánh với những tháng trước
+- Gợi ý mức ngân sách phù hợp
+
+🎯 6. Tùy chỉnh và đồng bộ
+- Hỗ trợ đa loại tiền tệ
+- Đồng bộ dữ liệu qua đám mây
+- Tùy chỉnh giao diện sáng/tối, màu sắc danh mục
+
+4. GIAO DIỆN NGƯỜI DÙNG (UI EXPECTATIONS)
+- Giao diện đơn giản, dễ dùng, thao tác trong 1–2 lần chạm
+- Giao diện có tab chính: "Tổng quan", "Giao dịch", "Ngân sách", "Báo cáo", "Cài đặt"
+- Biểu đồ dùng dạng trực quan (tròn, thanh, cột)
+
+5. YÊU CẦU PHI CHỨC NĂNG
+Loại             |  Mô tả
+----------------------------------------------------------------------------------------------
+Hiệu suất	     |  Phản hồi các thao tác trong < 1 giây
+Bảo mật	         |  Mã hóa dữ liệu nhạy cảm (AES-256), xác thực OTP, xác thực sinh trắc học
+Khả năng mở rộng | 	Hỗ trợ nhiều ví, tài khoản, ngôn ngữ trong tương lai
+Đa nền tảng	     |  iOS 14+ và Android 9.0+
+
+6. GIỚI HẠN DỰ ÁN
+- Không tích hợp ngân hàng thật ở giai đoạn MVP
+- Không hỗ trợ đầu tư tài chính (chứng khoán, crypto)
+- Không hỗ trợ chia sẻ tài khoản (multi-user) giai đoạn đầu
+
+7. PHỤ LỤC
+7.1 Danh mục mặc định
+Danh mục thu nhập	|  Danh mục chi tiêu
+--------------------------------------------
+Lương	            |  Ăn uống
+Phụ cấp	            |  Di chuyển
+Tiền thưởng	        |  Mua sắm
+Khác	            |  Giải trí
+
+7.2 Luồng người dùng mẫu
+Luồng 1: Thêm giao dịch
+
+- Người dùng mở app, chọn “+”
+- Nhập số tiền, chọn danh mục
+- Thêm ghi chú nếu cần → Lưu
+
+Luồng 2: Tạo ngân sách
+
+- Vào tab “Ngân sách”
+- Nhấn “Tạo ngân sách mới”
+- Chọn danh mục, số tiền tối đa, chu kỳ → Lưu
+
+✅ KẾT LUẬN
+Tài liệu này cung cấp nền tảng rõ ràng để thiết kế, phát triển và kiểm thử một ứng dụng quản lý ngân sách cá nhân thân thiện, dễ sử dụng và hữu ích cho nhiều đối tượng người dùng.
+
+## English version
+1. INTRODUCTION
+1.1 System Objectives
+The Personal Budget app aims to help users manage their personal finances with ease. Primary objectives include:
+
+- Track daily income and expenses
+- Set budgets by month and by category
+- Analyze and report financial status
+- Provide smart suggestions to save money and optimize spending
+
+1.2 Target Users
+- Working professionals seeking to manage their personal expenses
+- Students who want to control allowances or scholarship money
+- Small families who need to manage monthly household budgets
+
+2. PROJECT SCOPE
+The application will be developed as a mobile app (iOS/Android) with the following core features:
+
+- User registration and login
+- Add income and expense transactions
+- Assign categories, notes, and timestamps
+- Create and monitor budgets
+- View financial charts and reports
+- Receive smart financial suggestions based on user data
+
+3. USER REQUIREMENTS
+3.1 User Personas
+Persona	                   | Description
+-------------------------------------------------------------------------------------------------------
+Minh (25 years old)	       | Office worker with stable income, wants to save for a house
+Hanh (21 years old)	       | Student living on parental support, needs to track monthly spending
+Tuan & Hoa (30 & 28 y.o)   | Young couple with a small child, managing family budget
+
+3.2 Key Functional Requirements by User
+🎯 1. User Registration and Authentication
+- Users can register using email/phone number or sign in with Google, Facebook, or Apple
+- Features include “Forgot password” and OTP verification
+
+🎯 2. Record Transactions
+- Users can add income or expense transactions
+- Assign to categories (e.g., food, transport, entertainment)
+- Each transaction may include: amount, notes, receipt photo, date, and wallet type (cash, bank card)
+
+🎯 3. Budget Management
+- Users can set monthly budgets by category (e.g., food: max 3M VND)
+- App will alert users if they are close to exceeding their budgets
+
+🎯 4. Financial Reports
+- Display pie charts showing spending by category
+- Bar charts by time (weekly/monthly/yearly)
+- Summary reports of income – expenses – balance
+
+🎯 5. Smart Saving Suggestions
+- App suggests categories with excessive spending
+- Compare with previous months
+- Recommend optimized budget levels
+
+🎯 6. Customization & Sync
+- Support for multiple currencies
+- Cloud data synchronization
+- UI customization (light/dark mode, color-coded categories)
+
+4. USER INTERFACE EXPECTATIONS
+- Clean, simple, intuitive interface with 1–2 tap actions
+- Main tabs: Overview, Transactions, Budgets, Reports, Settings
+- Charts are visual (pie, bar, line) and easy to interpret
+
+5. NON-FUNCTIONAL REQUIREMENTS
+Type	       |  Description
+----------------------------------------------------------------------------------------------------
+Performance	   |  Actions should respond in under 1 second
+Security	   |  Sensitive data encrypted (AES-256), OTP verification, biometric authentication
+Scalability	   |  Support multiple wallets, accounts, languages in future versions
+Cross-platform |  Compatible with iOS 14+ and Android 9.0+
+
+6. PROJECT LIMITATIONS
+- No real bank integration in MVP version
+- No support for investment management (stocks, crypto, etc.)
+- No multi-user/shared account support in the initial release
+
+7. APPENDIX
+7.1 Default Categories
+Income Categories	| Expense Categories
+---------------------------------------------
+Salary	            | Food & Drinks
+Allowance	        | Transportation
+Bonus	            | Shopping
+Other	            | Entertainment
+
+7.2 Example User Flows
+Flow 1: Add a Transaction
+
+- User opens app → taps “+” button
+- Enters amount → selects category
+- Adds note if needed → Saves transaction
+
+Flow 2: Create a Budget
+
+- User navigates to “Budgets” tab
+- Taps “Create New Budget”
+- Selects category, amount limit, cycle → Saves budget
+
+✅ CONCLUSION
+This document outlines a clear foundation for the design, development, and testing of a personal budget management app that is friendly, intuitive, and useful for a wide range of users.
