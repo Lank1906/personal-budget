@@ -1,12 +1,213 @@
-body {
+/* ============================
+   🌐 GLOBAL STYLES - Personal Budget App
+   ============================ */
+
+/* RESET & BASE STYLE */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
   margin: 0;
-  font-family:
-    -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell',
-    'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  padding: 0;
+  font-family: 'Inter', 'Segoe UI', 'Roboto', sans-serif;
+}
+html,
+body {
+  height: 100%;
+  background-color: #f9fafb;
+  color: #1a1a1a;
+  line-height: 1.5;
   -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+/* ============================
+   🎨 VARIABLES (CSS Custom Properties)
+   ============================ */
+:root {
+  --color-primary: #4caf50;
+  --color-secondary: #ffc107;
+  --color-danger: #f44336;
+  --color-bg: #f9fafb;
+  --color-text: #1a1a1a;
+  --color-muted: #888;
+  --color-white: #ffffff;
+
+  --radius-sm: 6px;
+  --radius-md: 12px;
+
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 32px;
+
+  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.1);
+  --transition-fast: 0.2s;
+  --transition-smooth: 0.35s ease;
+}
+
+/* ============================
+   🌙 DARK MODE
+   ============================ */
+body.theme-dark {
+  --color-bg: #121212;
+  --color-text: #e0e0e0;
+  --color-muted: #999;
+  --color-primary: #66bb6a;
+  background-color: var(--color-bg);
+  color: var(--color-text);
+}
+
+/* ============================
+   📐 LAYOUT & STRUCTURE
+   ============================ */
+.container {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: var(--spacing-md);
+}
+.section {
+  margin-bottom: var(--spacing-lg);
+}
+.card {
+  background: var(--color-white);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-md);
+  box-shadow: var(--shadow-sm);
+  transition: background var(--transition-smooth);
+}
+body.theme-dark .card {
+  background: #1e1e1e;
+}
+
+/* ============================
+   🖋️ TYPOGRAPHY
+   ============================ */
+h1,
+h2,
+h3,
+h4 {
+  font-weight: 600;
+  color: var(--color-text);
+  margin-bottom: var(--spacing-sm);
+}
+p {
+  margin-bottom: var(--spacing-sm);
+  color: var(--color-text);
+}
+.text-muted {
+  color: var(--color-muted);
+}
+.text-center {
+  text-align: center;
+}
+
+/* ============================
+   🔘 BUTTONS
+   ============================ */
+.button {
+  padding: 10px 16px;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-weight: 600;
+  cursor: pointer;
+  background-color: var(--color-primary);
+  color: white;
+  transition: all var(--transition-fast);
+}
+.button:hover {
+  background-color: #43a047;
+}
+.button--secondary {
+  background-color: var(--color-secondary);
+}
+.button--danger {
+  background-color: var(--color-danger);
+}
+
+/* ============================
+   🧾 FORM ELEMENTS
+   ============================ */
+input[type='text'],
+input[type='number'],
+input[type='email'],
+input[type='password'],
+select,
+textarea {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: var(--spacing-sm);
+  border-radius: var(--radius-sm);
+  border: 1px solid #ccc;
+  background-color: white;
+  color: var(--color-text);
+  font-size: 1rem;
+}
+body.theme-dark input,
+body.theme-dark textarea,
+body.theme-dark select {
+  background-color: #1e1e1e;
+  border-color: #444;
+  color: white;
+}
+
+/* ============================
+   📊 CHART PLACEHOLDER STYLE
+   ============================ */
+.chart-container {
+  width: 100%;
+  height: 300px;
+  margin-top: var(--spacing-md);
+}
+
+/* ============================
+   🎞️ ANIMATIONS
+   ============================ */
+.fade-in {
+  opacity: 0;
+  animation: fadeIn 0.4s ease-in forwards;
+}
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+  }
+}
+.slide-up {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: slideUp 0.4s ease-out forwards;
+}
+@keyframes slideUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.pop-in {
+  transform: scale(0.95);
+  opacity: 0;
+  animation: popIn 0.3s ease-out forwards;
+}
+@keyframes popIn {
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* ============================
+   🧰 UTILITIES
+   ============================ */
+.hidden {
+  display: none !important;
+}
+.text-right {
+  text-align: right;
+}
+.mt-sm {
+  margin-top: var(--spacing-sm);
+}
+.mt-md {
+  margin-top: var(--spacing-md);
+}
+.mt-lg {
+  margin-top: var(--spacing-lg);
 }
