@@ -3,6 +3,7 @@ import { Box, Typography, TextField, Button, Paper, Alert } from '@mui/material'
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../../firebase';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 const LoginPage: React.FC = () => {
   const navigate = useNavigate();
@@ -10,6 +11,7 @@ const LoginPage: React.FC = () => {
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const { t, i18n } = useTranslation();
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -47,10 +49,10 @@ const LoginPage: React.FC = () => {
         }}
       >
         <Typography variant="h5" fontWeight={600} mb={0.5} sx={{ letterSpacing: '-0.5px' }}>
-          Đăng nhập
+          {t('login.loginbtn')}
         </Typography>
         <Typography variant="body2" color="text.secondary" mb={3}>
-          Chào mừng trở lại
+          {t('login.welcome')}
         </Typography>
 
         {error && (
@@ -85,7 +87,7 @@ const LoginPage: React.FC = () => {
           />
 
           <TextField
-            label="Mật khẩu"
+            label={t('login.password')}
             type="password"
             fullWidth
             variant="outlined"
@@ -123,10 +125,14 @@ const LoginPage: React.FC = () => {
               '&:hover': { bgcolor: '#1f2937' },
             }}
           >
-            {loading ? 'Đang đăng nhập...' : 'Đăng nhập'}
+            {loading ? t('login.logging') : t('login.loginbtn')}
           </Button>
         </form>
       </Paper>
+      <div style={{ marginTop: 20 }}>
+        <button onClick={() => i18n.changeLanguage('vi')}>🇻🇳 Tiếng Việt</button>
+        <button onClick={() => i18n.changeLanguage('en')}>🇺🇸 English</button>
+      </div>
     </Box>
   );
 };

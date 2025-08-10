@@ -1,0 +1,11 @@
+{
+    "page":{
+        "title":"Đây là ví dụ về 1 title trong page"
+    },
+    "login":{
+        "password":"Mật Khẩu",
+        "loginbtn":"Đăng Nhập",
+        "welcome":"Chào mùng quay trở lại!",
+        "logging":"Đang đăng nhập ..."
+    }
+}
