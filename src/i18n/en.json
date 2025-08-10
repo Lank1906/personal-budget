@@ -1,0 +1,11 @@
+{
+    "page":{
+        "title":"This is an example title in page"
+    },
+    "login":{
+        "password":"password",
+        "loginbtn":"Login",
+        "welcome":"Welcome back!",
+        "logging":"Is Logging ..."
+    }
+}
