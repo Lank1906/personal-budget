@@ -33,20 +33,20 @@ export function addTime(
 
 export function getWeekdayCountInMonth(month: number, year: number) {
   const weekdaysCount: Record<string, number> = {
-    Mon: 0, // Thứ 2
-    Tue: 0, // Thứ 3
-    Wed: 0, // Thứ 4
-    Thu: 0, // Thứ 5
-    Fri: 0, // Thứ 6
-    Sat: 0, // Thứ 7
-    Sun: 0, // Chủ nhật
+    Mon: 0,
+    Tue: 0,
+    Wed: 0,
+    Thu: 0,
+    Fri: 0,
+    Sat: 0,
+    Sun: 0,
   };
 
   const daysInMonth = new Date(year, month, 0).getDate();
 
   for (let day = 1; day <= daysInMonth; day++) {
     const date = new Date(year, month - 1, day);
-    const dayName = date.toLocaleDateString('en-US', { weekday: 'short' }); // Mon, Tue...
+    const dayName = date.toLocaleDateString('en-US', { weekday: 'short' });
     weekdaysCount[dayName]++;
   }
 

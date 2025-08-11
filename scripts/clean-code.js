@@ -2,10 +2,7 @@ const fs = require('fs');
 const path = require('path');
 const glob = require('glob');
 
-const ignoreList = [
-  'src/firebase.ts',
-  'src/react-app-env.d.ts'
-];
+const ignoreList = ['src/firebase.ts', 'src/react-app-env.d.ts'];
 
 const FILES = glob.sync('src/**/*.{js,jsx,ts,tsx}', { absolute: true });
 
@@ -21,7 +18,7 @@ filesToClean.forEach((filePath) => {
   try {
     code = code.replace(/^\s*console\.[a-z]+\([^;]*\);?\s*$/gm, '');
     code = code.replace(/^\s*debugger;?\s*$/gm, '');
-    code = code.replace(/^\s*\/\/(?!\s*https?:\/\/).*$/gm, '');
+    code = code.replace(/\/\/(?!\s*https?:\/\/).*$/gm, '');
     code = code.replace(/\/\*[^]*?\*\//gm, '');
     code = code.replace(/\n{3,}/g, '\n\n');
 
