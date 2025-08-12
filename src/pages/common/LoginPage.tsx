@@ -1,76 +1,73 @@
-import React, { useState } from 'react';
-import { Box, Typography, TextField, Button, Paper, Alert } from '@mui/material';
-import { signInWithEmailAndPassword } from 'firebase/auth';
-import { auth } from '../../firebase';
-import { useNavigate } from 'react-router-dom';
+import React, { JSX, useState } from 'react';
+import {
+  Button,
+  Container,
+  Tab,
+  Tabs,
+  TextField,
+  Typography,
+  Paper,
+  Stack,
+  CircularProgress,
+} from '@mui/material';
+import GoogleIcon from '@mui/icons-material/Google';
+import { FirebaseAuthService } from '../../apis/auth';
+import { toast } from 'react-toastify';
 import { useTranslation } from 'react-i18next';
+import { useGlobalLoading } from '../../hooks/useGlobalLoading';
 
-const LoginPage: React.FC = () => {
-  const navigate = useNavigate();
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState(false);
-  const { t, i18n } = useTranslation();
+const authService = new FirebaseAuthService();
 
-  const handleLogin = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setError(null);
-    setLoading(true);
-    try {
-      await signInWithEmailAndPassword(auth, email, password);
-      localStorage.setItem('role', 'user');
-      navigate('/');
-    } catch (err: any) {
-      setError(err.message);
+export default function LoginPage(): JSX.Element {
+  const { t } = useTranslation();
+  const [tab, setTab] = useState<'login' | 'register'>('login');
+  const [email, setEmail] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
+  const [confirmPassword, setConfirmPassword] = useState<string>('');
+  const loading = useGlobalLoading();
+
+  const handleSubmit = async (): Promise<void> => {
+    if (tab === 'register' && password !== confirmPassword) {
+      toast.error(t('passwordMismatch'));
+      return;
     }
-    setLoading(false);
+
+    if (tab === 'login') {
+      await authService.login(email, password, {
+        successFn: (user) => toast('login success', user?.toJSON()),
+      });
+    } else {
+      await authService.register(email, password, {
+        successFn: (user) => toast('register success', user?.toJSON()),
+      });
+    }
+  };
+
+  const handleGoogleAuth = async (): Promise<void> => {
+    await authService.loginWithGoogle({
+      successFn: (user) => toast('login success', user?.toJSON()),
+    });
   };
 
   return (
-    <Box
-      sx={{
-        height: '100vh',
-        bgcolor: '#f8f9fa',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        px: 2,
-      }}
-    >
-      <Paper
-        elevation={3}
-        sx={{
-          p: 8,
-          width: '100%',
-          maxWidth: 600,
-          borderRadius: 3,
-          textAlign: 'center',
-        }}
-      >
-        <Typography variant="h5" fontWeight={600} mb={0.5} sx={{ letterSpacing: '-0.5px' }}>
-          {t('login.loginbtn')}
-        </Typography>
-        <Typography variant="body2" color="text.secondary" mb={3}>
-          {t('login.welcome')}
+    <Container maxWidth="sm">
+      <Paper elevation={4} sx={{ mt: 8, p: 4, borderRadius: 3, textAlign: 'center' }}>
+        <Typography variant="h4" fontWeight="bold" gutterBottom>
+          {tab === 'login' ? t('login.login') : t('login.register')}
         </Typography>
 
-        {error && (
-          <Alert severity="error" sx={{ mb: 2 }}>
-            {error}
-          </Alert>
-        )}
+        <Tabs value={tab} onChange={(_, value) => setTab(value)} centered sx={{ mb: 3 }}>
+          <Tab label={t('login.login')} value="login" />
+          <Tab label={t('login.register')} value="register" />
+        </Tabs>
 
-        <form onSubmit={handleLogin}>
+        <Stack spacing={2}>
           <TextField
-            label="Email"
+            label={t('login.email')}
             type="email"
             fullWidth
-            variant="outlined"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            margin="normal"
-            required
             sx={{
               '& .MuiOutlinedInput-root': {
                 borderRadius: 2,
@@ -85,16 +82,12 @@ const LoginPage: React.FC = () => {
               },
             }}
           />
-
           <TextField
             label={t('login.password')}
             type="password"
             fullWidth
-            variant="outlined"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            margin="normal"
-            required
             sx={{
               '& .MuiOutlinedInput-root': {
                 borderRadius: 2,
@@ -110,31 +103,69 @@ const LoginPage: React.FC = () => {
             }}
           />
 
-          <Button
-            type="submit"
-            variant="contained"
-            fullWidth
-            disabled={loading}
-            sx={{
-              mt: 2,
-              py: 1.2,
-              fontWeight: 600,
-              borderRadius: 2,
-              textTransform: 'none',
-              bgcolor: '#111827',
-              '&:hover': { bgcolor: '#1f2937' },
-            }}
-          >
-            {loading ? t('login.logging') : t('login.loginbtn')}
-          </Button>
-        </form>
-      </Paper>
-      <div style={{ marginTop: 20 }}>
-        <button onClick={() => i18n.changeLanguage('vi')}>🇻🇳 Tiếng Việt</button>
-        <button onClick={() => i18n.changeLanguage('en')}>🇺🇸 English</button>
-      </div>
-    </Box>
-  );
-};
+          {tab === 'register' && (
+            <TextField
+              label={t('login.confirmPassword')}
+              type="password"
+              fullWidth
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              sx={{
+                '& .MuiOutlinedInput-root': {
+                  borderRadius: 2,
+                  backgroundColor: '#f3f4f6',
+                },
+                '& .MuiInputBase-input': {
+                  padding: '12px 14px',
+                  marginBottom: 0,
+                },
+                '& .MuiInputLabel-root': {
+                  backgroundColor: 'white',
+                },
+              }}
+            />
+          )}
 
-export default LoginPage;
+          <Button
+            variant="contained"
+            color="primary"
+            fullWidth
+            size="large"
+            onClick={handleSubmit}
+            disabled={loading}
+            sx={{ mt: 1 }}
+          >
+            {loading ? (
+              <CircularProgress size={26} color="inherit" />
+            ) : tab === 'login' ? (
+              t('login.login')
+            ) : (
+              t('login.register')
+            )}
+          </Button>
+
+          <Typography variant="body2" sx={{ my: 1, color: 'gray' }}>
+            {t('or')}
+          </Typography>
+
+          <Button
+            variant="outlined"
+            startIcon={<GoogleIcon />}
+            fullWidth
+            size="large"
+            onClick={handleGoogleAuth}
+            disabled={loading}
+          >
+            {loading ? (
+              <CircularProgress size={26} color="inherit" />
+            ) : tab === 'login' ? (
+              t('login.loginWithGoogle')
+            ) : (
+              t('login.registerWithGoogle')
+            )}
+          </Button>
+        </Stack>
+      </Paper>
+    </Container>
+  );
+}

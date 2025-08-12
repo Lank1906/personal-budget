@@ -3,9 +3,14 @@
         "title":"Đây là ví dụ về 1 title trong page"
     },
     "login":{
-        "password":"Mật Khẩu",
-        "loginbtn":"Đăng Nhập",
-        "welcome":"Chào mùng quay trở lại!",
-        "logging":"Đang đăng nhập ..."
-    }
+        "login": "Đăng nhập",
+        "register": "Đăng ký",
+        "email": "Email",
+        "password": "Mật khẩu",
+        "confirmPassword": "Xác nhận mật khẩu",
+        "or": "Hoặc",
+        "loginWithGoogle": "Đăng nhập với Google",
+        "registerWithGoogle": "Đăng ký với Google",
+        "passwordMismatch": "Mật khẩu xác nhận không khớp"
+      }
 }
