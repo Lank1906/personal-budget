@@ -1,0 +1,16 @@
+{
+    "page":{
+        "title":"Đây là ví dụ về 1 title trong page"
+    },
+    "login":{
+        "login": "Đăng nhập",
+        "register": "Đăng ký",
+        "email": "Email",
+        "password": "Mật khẩu",
+        "confirmPassword": "Xác nhận mật khẩu",
+        "or": "Hoặc",
+        "loginWithGoogle": "Đăng nhập với Google",
+        "registerWithGoogle": "Đăng ký với Google",
+        "passwordMismatch": "Mật khẩu xác nhận không khớp"
+      }
+}

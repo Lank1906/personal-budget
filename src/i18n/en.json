@@ -1,0 +1,16 @@
+{
+    "page":{
+        "title":"This is an example title in page"
+    },
+    "login":{
+        "login": "Login",
+        "register": "Register",
+        "email": "Email",
+        "password": "Password",
+        "confirmPassword": "Confirm password",
+        "or": "Or",
+        "loginWithGoogle": "Login with Google",
+        "registerWithGoogle": "Register with Google",
+        "passwordMismatch": "Password confirmation does not match"
+      }
+}
