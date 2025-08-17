@@ -1,7 +1,8 @@
 import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
 import { User } from 'firebase/auth';
 import { FirebaseAuthService } from '../../apis/auth';
-import { userReq, userState } from '../../types/user';
+import { userReqWithOptions, userState } from '../../types/user';
+import { CallApiOption } from '../../types/api';
 
 const authService = new FirebaseAuthService();
 
@@ -9,21 +10,41 @@ const initialState: userState = {
   user: null,
 };
 
-export const login = createAsyncThunk('user/loginUser', async ({ email, password }: userReq) => {
-  await authService.login(email, password);
-});
+export const login = createAsyncThunk<User, userReqWithOptions>(
+  'user/loginUser',
+  async ({ email, password, options }, { rejectWithValue }) => {
+    const res = await authService.login(email, password, { successFn: options?.successFn });
+    if (res.success) return res.data as User;
+    else return rejectWithValue(res.error);
+  },
+);
 
-export const register = createAsyncThunk('user/register', async ({ email, password }: userReq) => {
-  await authService.register(email, password);
-});
+export const register = createAsyncThunk<User, userReqWithOptions>(
+  'user/register',
+  async ({ email, password, options }, { rejectWithValue }) => {
+    const res = await authService.register(email, password, { successFn: options?.successFn });
+    if (res.success) return res.data as User;
+    else return rejectWithValue(res.error);
+  },
+);
 
-export const loginWithGoogle = createAsyncThunk('user/loginWithGoogle', async () => {
-  await authService.loginWithGoogle();
-});
+export const loginWithGoogle = createAsyncThunk<User, CallApiOption>(
+  'user/loginWithGoogle',
+  async (options, { rejectWithValue }) => {
+    const res = await authService.loginWithGoogle({ successFn: options?.successFn });
+    if (res.success) return res.data as User;
+    else return rejectWithValue(res.error);
+  },
+);
 
-export const logout = createAsyncThunk('user/logout', async () => {
-  await authService.logout();
-});
+export const logout = createAsyncThunk<null, CallApiOption>(
+  'user/logout',
+  async (options, { rejectWithValue }) => {
+    const res = await authService.logout({ successFn: options.successFn });
+    if (res.success) return null;
+    else return rejectWithValue(res.error);
+  },
+);
 
 const userSlice = createSlice({
   name: 'user',

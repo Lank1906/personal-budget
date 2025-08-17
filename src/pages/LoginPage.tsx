@@ -1,4 +1,4 @@
-import React, { JSX, useState } from 'react';
+import React, { JSX, useEffect, useState } from 'react';
 import {
   Button,
   Container,
@@ -11,12 +11,13 @@ import {
   CircularProgress,
 } from '@mui/material';
 import GoogleIcon from '@mui/icons-material/Google';
-import { FirebaseAuthService } from '../apis/auth';
 import { toast } from 'react-toastify';
 import { useTranslation } from 'react-i18next';
 import { useGlobalLoading } from '../hooks/useGlobalLoading';
-
-const authService = new FirebaseAuthService();
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '../store';
+import { login, loginWithGoogle, register } from '../store/slices/userSlice';
+import { useNavigate } from 'react-router-dom';
 
 export default function LoginPage(): JSX.Element {
   const { t } = useTranslation();
@@ -24,7 +25,14 @@ export default function LoginPage(): JSX.Element {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [confirmPassword, setConfirmPassword] = useState<string>('');
+  const dispatch = useDispatch<AppDispatch>();
+  const navigator = useNavigate();
+  const { user } = useSelector((state: RootState) => state.user);
   const loading = useGlobalLoading();
+
+  useEffect(() => {
+    if (user) navigator('/');
+  }, []);
 
   const handleSubmit = async (): Promise<void> => {
     if (tab === 'register' && password !== confirmPassword) {
@@ -33,20 +41,18 @@ export default function LoginPage(): JSX.Element {
     }
 
     if (tab === 'login') {
-      await authService.login(email, password, {
-        successFn: (user: any) => toast('login success', user?.toJSON()),
-      });
+      dispatch(login({ email, password, options: { successFn: () => navigator('/') } }));
     } else {
-      await authService.register(email, password, {
-        successFn: (user: any) => toast('register success', user?.toJSON()),
-      });
+      dispatch(register({ email, password, options: { successFn: () => navigator('/') } }));
     }
   };
 
   const handleGoogleAuth = async (): Promise<void> => {
-    await authService.loginWithGoogle({
-      successFn: (user: any) => toast('login success', user?.toJSON()),
-    });
+    dispatch(
+      loginWithGoogle({
+        successFn: () => navigator('/'),
+      }),
+    );
   };
 
   return (
