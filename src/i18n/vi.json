@@ -11,6 +11,18 @@
         "or": "Hoặc",
         "loginWithGoogle": "Đăng nhập với Google",
         "registerWithGoogle": "Đăng ký với Google",
-        "passwordMismatch": "Mật khẩu xác nhận không khớp"
+        "passwordMismatch": "Mật khẩu xác nhận không khớp",
+        "loginSuccess": "Đăng nhập thành công!",
+        "loginFail": "Đăng nhập thất bại, vui lòng kiểm tra lại.",
+        "registerSuccess": "Đăng ký thành công!",
+        "registerFail": "Đăng ký thất bại, vui lòng thử lại.",
+        "loginWithGoogleSuccess": "Đăng nhập với Google thành công!",
+        "loginWithGoogleFail": "Đăng nhập với Google thất bại.",
+        "changePasswordSuccess": "Đổi mật khẩu thành công!",
+        "changePasswordFail": "Đổi mật khẩu thất bại.",
+        "resetPasswordEmailSent": "Email đặt lại mật khẩu đã được gửi!",
+        "resetPasswordEmailFail": "Gửi email đặt lại mật khẩu thất bại.",
+        "logoutSuccess": "Đăng xuất thành công!",
+        "logoutFail": "Đăng xuất thất bại."
       }
 }

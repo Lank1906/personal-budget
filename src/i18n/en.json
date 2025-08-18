@@ -11,6 +11,18 @@
         "or": "Or",
         "loginWithGoogle": "Login with Google",
         "registerWithGoogle": "Register with Google",
-        "passwordMismatch": "Password confirmation does not match"
+        "passwordMismatch": "Password confirmation does not match",
+        "loginSuccess": "Login successful!",
+        "loginFail": "Login failed, please check again.",
+        "registerSuccess": "Registration successful!",
+        "registerFail": "Registration failed, please try again.",
+        "loginWithGoogleSuccess": "Google login successful!",
+        "loginWithGoogleFail": "Google login failed.",
+        "changePasswordSuccess": "Password changed successfully!",
+        "changePasswordFail": "Password change failed.",
+        "resetPasswordEmailSent": "Password reset email has been sent!",
+        "resetPasswordEmailFail": "Sending password reset email failed.",
+        "logoutSuccess": "Logout successful!",
+        "logoutFail": "Logout failed."
       }
 }
