@@ -11,27 +11,50 @@
   padding: 0;
   font-family: 'Inter', 'Segoe UI', 'Roboto', sans-serif;
 }
+
 html,
 body {
   height: 100%;
-  background-color: #f9fafb;
-  color: #1a1a1a;
+  background-color: var(--color-bg);
+  color: var(--color-text);
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
+  transition:
+    background var(--transition-smooth),
+    color var(--transition-smooth);
 }
 
 /* ============================
    🎨 VARIABLES (CSS Custom Properties)
    ============================ */
 :root {
+  /* Core colors */
   --color-primary: #4caf50;
   --color-secondary: #ffc107;
   --color-danger: #f44336;
-  --color-bg: #f9fafb;
-  --color-text: #1a1a1a;
+
   --color-muted: #888;
   --color-white: #ffffff;
 
+  /* Light mode */
+  --color-bg-light: #f9f9f9;
+  --color-paper-light: #ffffff;
+  --color-text-light: #1a1a1a;
+  --color-sidebar-light: #f5f6fa;
+
+  /* Dark mode */
+  --color-bg-dark: #121212;
+  --color-paper-dark: #1e1e1e;
+  --color-text-dark: #e0e0e0;
+  --color-sidebar-dark: #1e1e1e;
+
+  /* Defaults (light mode by default) */
+  --color-bg: var(--color-bg-light);
+  --color-paper: var(--color-paper-light);
+  --color-text: var(--color-text-light);
+  --color-sidebar: var(--color-sidebar-light);
+
+  /* Radius & spacing */
   --radius-sm: 6px;
   --radius-md: 12px;
 
@@ -39,6 +62,7 @@ body {
   --spacing-md: 16px;
   --spacing-lg: 32px;
 
+  /* Effects */
   --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.1);
   --transition-fast: 0.2s;
   --transition-smooth: 0.35s ease;
@@ -48,12 +72,12 @@ body {
    🌙 DARK MODE
    ============================ */
 body.theme-dark {
-  --color-bg: #121212;
-  --color-text: #e0e0e0;
+  --color-bg: var(--color-bg-dark);
+  --color-paper: var(--color-paper-dark);
+  --color-text: var(--color-text-dark);
+  --color-sidebar: var(--color-sidebar-dark);
   --color-muted: #999;
   --color-primary: #66bb6a;
-  background-color: var(--color-bg);
-  color: var(--color-text);
 }
 
 /* ============================
@@ -64,18 +88,19 @@ body.theme-dark {
   margin: 0 auto;
   padding: var(--spacing-md);
 }
+
 .section {
   margin-bottom: var(--spacing-lg);
 }
+
 .card {
-  background: var(--color-white);
+  background: var(--color-paper);
   border-radius: var(--radius-md);
   padding: var(--spacing-md);
   box-shadow: var(--shadow-sm);
-  transition: background var(--transition-smooth);
-}
-body.theme-dark .card {
-  background: #1e1e1e;
+  transition:
+    background var(--transition-smooth),
+    color var(--transition-smooth);
 }
 
 /* ============================
@@ -89,13 +114,16 @@ h4 {
   color: var(--color-text);
   margin-bottom: var(--spacing-sm);
 }
+
 p {
   margin-bottom: var(--spacing-sm);
   color: var(--color-text);
 }
+
 .text-muted {
   color: var(--color-muted);
 }
+
 .text-center {
   text-align: center;
 }
@@ -104,21 +132,32 @@ p {
    🔘 BUTTONS
    ============================ */
 .button {
+  display: inline-block;
   padding: 10px 16px;
   border: none;
   border-radius: var(--radius-sm);
   font-weight: 600;
   cursor: pointer;
   background-color: var(--color-primary);
-  color: white;
-  transition: all var(--transition-fast);
+  color: var(--color-white);
+  transition:
+    background var(--transition-fast),
+    transform var(--transition-fast);
 }
+
 .button:hover {
   background-color: #43a047;
+  transform: translateY(-1px);
 }
+
+.button:active {
+  transform: translateY(0);
+}
+
 .button--secondary {
   background-color: var(--color-secondary);
 }
+
 .button--danger {
   background-color: var(--color-danger);
 }
@@ -126,10 +165,7 @@ p {
 /* ============================
    🧾 FORM ELEMENTS
    ============================ */
-input[type='text'],
-input[type='number'],
-input[type='email'],
-input[type='password'],
+input,
 select,
 textarea {
   width: 100%;
@@ -137,16 +173,26 @@ textarea {
   margin-bottom: var(--spacing-sm);
   border-radius: var(--radius-sm);
   border: 1px solid #ccc;
-  background-color: white;
+  background-color: var(--color-paper);
   color: var(--color-text);
   font-size: 1rem;
+  transition:
+    background var(--transition-smooth),
+    color var(--transition-smooth),
+    border var(--transition-fast);
 }
+
+input:focus,
+select:focus,
+textarea:focus {
+  border-color: var(--color-primary);
+  outline: none;
+}
+
 body.theme-dark input,
 body.theme-dark textarea,
 body.theme-dark select {
-  background-color: #1e1e1e;
   border-color: #444;
-  color: white;
 }
 
 /* ============================
@@ -165,27 +211,32 @@ body.theme-dark select {
   opacity: 0;
   animation: fadeIn 0.4s ease-in forwards;
 }
+
 @keyframes fadeIn {
   to {
     opacity: 1;
   }
 }
+
 .slide-up {
   opacity: 0;
   transform: translateY(20px);
   animation: slideUp 0.4s ease-out forwards;
 }
+
 @keyframes slideUp {
   to {
     opacity: 1;
     transform: translateY(0);
   }
 }
+
 .pop-in {
   transform: scale(0.95);
   opacity: 0;
   animation: popIn 0.3s ease-out forwards;
 }
+
 @keyframes popIn {
   to {
     transform: scale(1);
@@ -199,15 +250,19 @@ body.theme-dark select {
 .hidden {
   display: none !important;
 }
+
 .text-right {
   text-align: right;
 }
+
 .mt-sm {
   margin-top: var(--spacing-sm);
 }
+
 .mt-md {
   margin-top: var(--spacing-md);
 }
+
 .mt-lg {
   margin-top: var(--spacing-lg);
 }
