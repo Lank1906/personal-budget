@@ -27,6 +27,7 @@ export const getAppTheme = (mode: 'light' | 'dark') =>
             },
             custom: {
               sidebar: 'var(--color-sidebar-light)',
+              transition: 'all ease .2s',
             },
           }),
     },
