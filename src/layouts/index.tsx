@@ -5,6 +5,7 @@ import { useLocation, Link as RouterLink } from 'react-router-dom';
 import { ThemeProvider } from '@mui/material/styles';
 import { Brightness4, Brightness7, ChevronLeft, ChevronRight } from '@mui/icons-material';
 import { getAppTheme } from './theme';
+import SidebarMenu from '../components/sidebar';
 
 const MainLayout = ({ children }: MainLayoutProps) => {
   const location = useLocation();
@@ -32,7 +33,6 @@ const MainLayout = ({ children }: MainLayoutProps) => {
         color="text.primary"
         gap={2}
       >
-        {}
         <Box
           sx={{
             width: collapsed ? 72 : 260,
@@ -48,7 +48,6 @@ const MainLayout = ({ children }: MainLayoutProps) => {
             position: 'relative',
           }}
         >
-          {}
           <Box
             display="flex"
             alignItems="center"
@@ -65,7 +64,7 @@ const MainLayout = ({ children }: MainLayoutProps) => {
               />
               {!collapsed && (
                 <Typography variant="h6" fontWeight="bold" noWrap>
-                  My App
+                  Personal Budget
                 </Typography>
               )}
             </Box>
@@ -96,26 +95,10 @@ const MainLayout = ({ children }: MainLayoutProps) => {
 
           <Divider sx={{ width: '100%', mb: 2 }} />
 
-          {}
-          <Box
-            display="flex"
-            flexDirection="column"
-            gap={2}
-            width="100%"
-            alignItems={collapsed ? 'center' : 'left'}
-          >
-            <Link component={RouterLink} to="/" underline="none" color="text.primary">
-              {collapsed ? '🏠' : '🏠 Dashboard'}
-            </Link>
-            <Link component={RouterLink} to="/settings" underline="none" color="text.primary">
-              {collapsed ? '⚙️' : '⚙️ Settings'}
-            </Link>
-          </Box>
+          <SidebarMenu collapsed={collapsed} setCollapsed={setCollapsed} />
         </Box>
 
-        {}
         <Box flex={1} display="flex" flexDirection="column" overflow="auto">
-          {}
           <Box display="flex" justifyContent="space-between" alignItems="center" m={1}>
             <Breadcrumbs aria-label="breadcrumb">
               <Link component={RouterLink} underline="hover" color="inherit" to="/">
@@ -140,7 +123,6 @@ const MainLayout = ({ children }: MainLayoutProps) => {
             </IconButton>
           </Box>
 
-          {}
           <Box flex={1} bgcolor="background.paper" borderRadius={3} boxShadow={1} p={3}>
             {children}
           </Box>
