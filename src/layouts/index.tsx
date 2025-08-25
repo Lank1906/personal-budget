@@ -6,6 +6,7 @@ import { ThemeProvider } from '@mui/material/styles';
 import { Brightness4, Brightness7, ChevronLeft, ChevronRight } from '@mui/icons-material';
 import { getAppTheme } from './theme';
 import SidebarMenu from '../components/sidebar';
+import Copyright from '../components/copyright';
 
 const MainLayout = ({ children }: MainLayoutProps) => {
   const location = useLocation();
@@ -96,6 +97,7 @@ const MainLayout = ({ children }: MainLayoutProps) => {
           <Divider sx={{ width: '100%', mb: 2 }} />
 
           <SidebarMenu collapsed={collapsed} setCollapsed={setCollapsed} />
+          <Copyright collapsed={collapsed} />
         </Box>
 
         <Box flex={1} display="flex" flexDirection="column" overflow="auto">
