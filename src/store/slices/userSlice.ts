@@ -46,6 +46,15 @@ export const logout = createAsyncThunk<null, CallApiOption>(
   },
 );
 
+export const currentUser = createAsyncThunk<null, CallApiOption>(
+  'user/current',
+  async (options, { rejectWithValue }) => {
+    const res = await authService.getCurrentUser();
+    if (res) return null;
+    else return rejectWithValue(false);
+  },
+);
+
 const userSlice = createSlice({
   name: 'user',
   initialState,

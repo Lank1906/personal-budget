@@ -1,17 +1,33 @@
 import { MainLayoutProps } from '../types/layout';
 import { Box, Breadcrumbs, Typography, Link, IconButton, Divider, Tooltip } from '@mui/material';
-import { useMemo, useState } from 'react';
-import { useLocation, Link as RouterLink } from 'react-router-dom';
+import { useEffect, useMemo, useState } from 'react';
+import { useLocation, Link as RouterLink, useNavigate } from 'react-router-dom';
 import { ThemeProvider } from '@mui/material/styles';
-import { Brightness4, Brightness7, ChevronLeft, ChevronRight } from '@mui/icons-material';
+import {
+  Brightness4,
+  Brightness7,
+  ChevronLeft,
+  ChevronRight,
+  ExitToApp,
+} from '@mui/icons-material';
 import { getAppTheme } from './theme';
 import SidebarMenu from '../components/sidebar';
 import Copyright from '../components/copyright';
+import { AppDispatch, RootState } from '../store';
+import { useDispatch, useSelector } from 'react-redux';
+import { logout } from '../store/slices/userSlice';
 
 const MainLayout = ({ children }: MainLayoutProps) => {
   const location = useLocation();
   const [mode, setMode] = useState<'light' | 'dark'>('light');
   const [collapsed, setCollapsed] = useState(false);
+  const navigator = useNavigate();
+  const dispatch = useDispatch<AppDispatch>();
+  const { user } = useSelector((state: RootState) => state.user);
+
+  useEffect(() => {
+    if (!user?.email) navigator('/login');
+  }, []);
 
   const toggleColorMode = () => {
     setMode((prev) => (prev === 'light' ? 'dark' : 'light'));
@@ -120,9 +136,19 @@ const MainLayout = ({ children }: MainLayoutProps) => {
                 );
               })}
             </Breadcrumbs>
-            <IconButton onClick={toggleColorMode} sx={{ color: 'text.primary' }}>
-              {mode === 'light' ? <Brightness7 /> : <Brightness4 />}
-            </IconButton>
+            <Box>
+              <IconButton onClick={toggleColorMode} sx={{ color: 'text.primary' }}>
+                {mode === 'light' ? <Brightness7 /> : <Brightness4 />}
+              </IconButton>
+              <Tooltip title="Logout">
+                <IconButton
+                  onClick={() => dispatch(logout({ successFn: () => navigator('/login') }))}
+                  sx={{ color: 'text.primary' }}
+                >
+                  <ExitToApp />
+                </IconButton>
+              </Tooltip>
+            </Box>
           </Box>
 
           <Box flex={1} bgcolor="background.paper" borderRadius={3} boxShadow={1} p={3}>

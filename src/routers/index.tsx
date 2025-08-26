@@ -1,18 +1,20 @@
-import React, { Suspense, lazy } from 'react';
+import React, { Suspense, lazy, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import PrivateRoute from './PrivateRoute';
 import MainLayout from '../layouts';
+import { useSelector } from 'react-redux';
+import { RootState } from '../store';
 
 const LoginPage = lazy(() => import('../pages/LoginPage'));
 const NotFoundPage = lazy(() => import('../pages/NotFoundPage'));
 const HomePage = lazy(() => import('../pages/HomePage'));
 
-const getUserRole = () => {
-  return localStorage.getItem('role');
-};
-
 const AppRouter: React.FC = () => {
-  const userRole = getUserRole();
+  const { user } = useSelector((state: RootState) => state.user);
+  let userRole = 'no login';
+  useEffect(() => {
+    if (!user?.email) userRole = 'admin';
+  }, []);
 
   return (
     <Router>
@@ -28,7 +30,6 @@ const AppRouter: React.FC = () => {
           />
           <Route path="/login" element={<LoginPage />} />
 
-          {}
           <Route
             path="/admin"
             element={
