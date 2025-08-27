@@ -13,21 +13,13 @@ const AppRouter: React.FC = () => {
   const { user } = useSelector((state: RootState) => state.user);
   let userRole = 'no login';
   useEffect(() => {
-    if (!user?.email) userRole = 'admin';
+    if (!user?.email) userRole = 'user';
   }, []);
 
   return (
     <Router>
       <Suspense fallback={<div>Loading...</div>}>
         <Routes>
-          <Route
-            path="/"
-            element={
-              <MainLayout>
-                <HomePage />
-              </MainLayout>
-            }
-          />
           <Route path="/login" element={<LoginPage />} />
 
           <Route
@@ -39,15 +31,19 @@ const AppRouter: React.FC = () => {
           <Route
             path="/user"
             element={
-              <PrivateRoute
-                element={<NotFoundPage />}
-                allowedRoles={['user', 'admin']}
-                userRole={userRole}
-              />
+              <Routes>
+                <Route
+                  path=""
+                  element={
+                    <MainLayout>
+                      <HomePage />
+                    </MainLayout>
+                  }
+                />
+              </Routes>
             }
           />
 
-          {}
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </Suspense>

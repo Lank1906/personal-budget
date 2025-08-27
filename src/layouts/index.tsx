@@ -1,6 +1,6 @@
 import { MainLayoutProps } from '../types/layout';
 import { Box, Breadcrumbs, Typography, Link, IconButton, Divider, Tooltip } from '@mui/material';
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useLocation, Link as RouterLink, useNavigate } from 'react-router-dom';
 import { ThemeProvider } from '@mui/material/styles';
 import {
@@ -13,8 +13,8 @@ import {
 import { getAppTheme } from './theme';
 import SidebarMenu from '../components/sidebar';
 import Copyright from '../components/copyright';
-import { AppDispatch, RootState } from '../store';
-import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch } from '../store';
+import { useDispatch } from 'react-redux';
 import { logout } from '../store/slices/userSlice';
 
 const MainLayout = ({ children }: MainLayoutProps) => {
@@ -23,11 +23,6 @@ const MainLayout = ({ children }: MainLayoutProps) => {
   const [collapsed, setCollapsed] = useState(false);
   const navigator = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
-  const { user } = useSelector((state: RootState) => state.user);
-
-  useEffect(() => {
-    if (!user?.email) navigator('/login');
-  }, []);
 
   const toggleColorMode = () => {
     setMode((prev) => (prev === 'light' ? 'dark' : 'light'));
@@ -119,14 +114,14 @@ const MainLayout = ({ children }: MainLayoutProps) => {
         <Box flex={1} display="flex" flexDirection="column" overflow="auto">
           <Box display="flex" justifyContent="space-between" alignItems="center" m={1}>
             <Breadcrumbs aria-label="breadcrumb">
-              <Link component={RouterLink} underline="hover" color="inherit" to="/">
+              <Link component={RouterLink} underline="hover" color="inherit" to="/user">
                 Home
               </Link>
               {pathnames.map((value, index) => {
                 const to = `/${pathnames.slice(0, index + 1).join('/')}`;
                 const isLast = index === pathnames.length - 1;
                 return isLast ? (
-                  <Typography color="text.primary" key={to} sx={{ textTransform: 'capitalize' }}>
+                  <Typography color="inherit" key={to} sx={{ textTransform: 'capitalize' }}>
                     {value}
                   </Typography>
                 ) : (

@@ -23,7 +23,7 @@ const NotFoundPage: React.FC = () => {
       <Typography variant="h5" color="text.secondary" mb={2}>
         Oops! Trang bạn tìm không tồn tại.
       </Typography>
-      <Button variant="contained" color="primary" onClick={() => navigate('/')}>
+      <Button variant="contained" color="primary" onClick={() => navigate('/user')}>
         Quay về Trang chủ
       </Button>
     </Box>

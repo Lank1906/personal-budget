@@ -31,7 +31,7 @@ export default function LoginPage(): JSX.Element {
   const loading = useGlobalLoading();
 
   useEffect(() => {
-    if (user) navigator('/');
+    if (user) navigator('/user');
   }, []);
 
   const handleSubmit = async (): Promise<void> => {
@@ -41,16 +41,16 @@ export default function LoginPage(): JSX.Element {
     }
 
     if (tab === 'login') {
-      dispatch(login({ email, password, options: { successFn: () => navigator('/') } }));
+      dispatch(login({ email, password, options: { successFn: () => navigator('/user') } }));
     } else {
-      dispatch(register({ email, password, options: { successFn: () => navigator('/') } }));
+      dispatch(register({ email, password, options: { successFn: () => navigator('/user') } }));
     }
   };
 
   const handleGoogleAuth = async (): Promise<void> => {
     dispatch(
       loginWithGoogle({
-        successFn: () => navigator('/'),
+        successFn: () => navigator('/user'),
       }),
     );
   };
