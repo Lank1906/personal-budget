@@ -24,5 +24,9 @@
         "resetPasswordEmailFail": "Gửi email đặt lại mật khẩu thất bại.",
         "logoutSuccess": "Đăng xuất thành công!",
         "logoutFail": "Đăng xuất thất bại."
+      },
+      "notfound":{
+        "title":"Oops! Trang bạn tìm không tồn tại.",
+        "backToHome":"Quay về Trang chủ"
       }
 }

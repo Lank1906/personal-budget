@@ -1,11 +1,12 @@
 import React from 'react';
 import { Box, Typography, Button } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
 
 const NotFoundPage: React.FC = () => {
   const navigate = useNavigate();
-
+  const { t } = useTranslation();
   const Cloud = ({ size = 100, top = '10%', left = '10%', duration = 12 }: any) => (
     <motion.div
       animate={{ x: [0, 60, 0] }}
@@ -53,12 +54,9 @@ const NotFoundPage: React.FC = () => {
       }}
     >
       <svg width="200" height="80" viewBox="0 0 200 80">
-        {}
         <line x1="0" y1="40" x2="200" y2="40" stroke="#222" strokeWidth="6" />
-        {}
         <line x1="95" y1="35" x2="105" y2="20" stroke="orange" strokeWidth="4" />
         <line x1="105" y1="35" x2="95" y2="20" stroke="orange" strokeWidth="4" />
-        {}
         <circle cx="100" cy="25" r="6" fill="yellow" opacity="0.8" />
         <circle cx="110" cy="30" r="4" fill="yellow" opacity="0.6" />
         <circle cx="90" cy="30" r="4" fill="yellow" opacity="0.6" />
@@ -82,18 +80,15 @@ const NotFoundPage: React.FC = () => {
         px: 2,
       }}
     >
-      {}
       <Cloud size={120} top="15%" left="10%" duration={14} />
       <Cloud size={150} top="25%" left="70%" duration={18} />
       <Cloud size={100} top="40%" left="20%" duration={12} />
       <Cloud size={80} top="60%" left="80%" duration={16} />
 
-      {}
       <UFO size={160} top="30%" left="40%" delay={0} />
       <UFO size={120} top="55%" left="70%" delay={1} />
       <UFO size={100} top="70%" left="25%" delay={2} />
 
-      {}
       <motion.div
         initial={{ scale: 0.8, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
@@ -111,7 +106,6 @@ const NotFoundPage: React.FC = () => {
         </Typography>
       </motion.div>
 
-      {}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -125,11 +119,10 @@ const NotFoundPage: React.FC = () => {
             fontWeight: 400,
           }}
         >
-          Oops! Trang bạn tìm không tồn tại.
+          {t('notfound.title')}
         </Typography>
       </motion.div>
 
-      {}
       <motion.div
         initial={{ y: 30, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
@@ -153,11 +146,9 @@ const NotFoundPage: React.FC = () => {
             },
           }}
         >
-          Quay về Trang chủ
+          {t('notfound.backToHome')}
         </Button>
       </motion.div>
-
-      {}
       <BrokenWire />
     </Box>
   );

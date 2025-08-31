@@ -1,7 +1,6 @@
-import { MainLayoutProps } from '../types/layout';
 import { Box, Breadcrumbs, Typography, Link, IconButton, Divider, Tooltip } from '@mui/material';
 import { useMemo, useState } from 'react';
-import { useLocation, Link as RouterLink, useNavigate } from 'react-router-dom';
+import { useLocation, Link as RouterLink, useNavigate, Outlet } from 'react-router-dom';
 import { ThemeProvider } from '@mui/material/styles';
 import {
   Brightness4,
@@ -17,7 +16,7 @@ import { AppDispatch } from '../store';
 import { useDispatch } from 'react-redux';
 import { logout } from '../store/slices/userSlice';
 
-const MainLayout = ({ children }: MainLayoutProps) => {
+const MainLayout = () => {
   const location = useLocation();
   const [mode, setMode] = useState<'light' | 'dark'>('light');
   const [collapsed, setCollapsed] = useState(false);
@@ -147,7 +146,7 @@ const MainLayout = ({ children }: MainLayoutProps) => {
           </Box>
 
           <Box flex={1} bgcolor="background.paper" borderRadius={3} boxShadow={1} p={3}>
-            {children}
+            <Outlet />
           </Box>
         </Box>
       </Box>

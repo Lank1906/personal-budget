@@ -1,4 +1,4 @@
-import React, { Suspense, lazy, useEffect } from 'react';
+import React, { Suspense, lazy } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import PrivateRoute from './PrivateRoute';
 import MainLayout from '../layouts';
@@ -11,10 +11,7 @@ const HomePage = lazy(() => import('../pages/HomePage'));
 
 const AppRouter: React.FC = () => {
   const { user } = useSelector((state: RootState) => state.user);
-  let userRole = 'no login';
-  useEffect(() => {
-    if (!user?.email) userRole = 'user';
-  }, []);
+  const userRole = user?.email ? 'user' : 'no login';
 
   return (
     <Router>
@@ -22,27 +19,17 @@ const AppRouter: React.FC = () => {
         <Routes>
           <Route path="/login" element={<LoginPage />} />
 
-          <Route
-            path="/admin"
-            element={
-              <PrivateRoute element={<LoginPage />} allowedRoles={['admin']} userRole={userRole} />
-            }
-          />
-          <Route
-            path="/user"
-            element={
-              <Routes>
-                <Route
-                  path=""
-                  element={
-                    <MainLayout>
-                      <HomePage />
-                    </MainLayout>
-                  }
-                />
-              </Routes>
-            }
-          />
+          <Route element={<PrivateRoute allowedRoles={['admin']} userRole={userRole} />}>
+            <Route path="/admin" element={<MainLayout />}>
+              <Route index element={<HomePage />} />
+            </Route>
+          </Route>
+
+          <Route element={<PrivateRoute allowedRoles={['user', 'admin']} userRole={userRole} />}>
+            <Route path="/user" element={<MainLayout />}>
+              <Route index element={<HomePage />} />
+            </Route>
+          </Route>
 
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
