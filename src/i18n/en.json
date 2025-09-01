@@ -28,5 +28,17 @@
       "notfound":{
         "title":"Oops! The page you are looking for does not exist.",
         "backToHome":"Go back to Home"
+      },
+      "sidebar":{
+        "home":"Dashboard",
+        "transaction":"Transaction",
+        "category":"Category",
+        "wallet":"Wallet",
+        "report":"Reports",
+        "budget":"Budget",
+        "target":"Goals",
+        "setting":"Settings",
+        "account":"Accounts",
+        "helper":"Help"
       }
 }

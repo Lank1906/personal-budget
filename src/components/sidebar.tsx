@@ -5,21 +5,35 @@ import {
   AccountBalanceWallet,
   PieChart,
   Flag,
-  TrendingUp,
   Settings,
+  Category,
+  CreditCard,
+  BarChart,
+  Person,
+  HelpOutline,
 } from '@mui/icons-material';
 import { SidebarProps } from '../types/layout';
+import { useTranslation } from 'react-i18next';
 
 const SidebarMenu = ({ collapsed }: SidebarProps) => {
   const location = useLocation();
+  const { t } = useTranslation();
 
   const menuItems = [
-    { text: 'Dashboard', path: '/', icon: <Dashboard fontSize="small" /> },
-    { text: 'Giao dịch', path: '/transactions', icon: <AccountBalanceWallet fontSize="small" /> },
-    { text: 'Ngân sách', path: '/budget', icon: <PieChart fontSize="small" /> },
-    { text: 'Mục tiêu', path: '/goals', icon: <Flag fontSize="small" /> },
-    { text: 'Báo cáo', path: '/reports', icon: <TrendingUp fontSize="small" /> },
-    { text: 'Cài đặt', path: '/settings', icon: <Settings fontSize="small" /> },
+    { text: t('sidebar.home'), path: '/', icon: <Dashboard fontSize="small" /> },
+    {
+      text: t('sidebar.transaction'),
+      path: '/transactions',
+      icon: <AccountBalanceWallet fontSize="small" />,
+    },
+    { text: t('sidebar.category'), path: '/categories', icon: <Category fontSize="small" /> },
+    { text: t('sidebar.wallet'), path: '/wallets', icon: <CreditCard fontSize="small" /> },
+    { text: t('sidebar.report'), path: '/reports', icon: <BarChart fontSize="small" /> },
+    { text: t('sidebar.budget'), path: '/budget', icon: <PieChart fontSize="small" /> },
+    { text: t('sidebar.target'), path: '/goals', icon: <Flag fontSize="small" /> },
+    { text: t('sidebar.setting'), path: '/settings', icon: <Settings fontSize="small" /> },
+    { text: t('sidebar.account'), path: '/settings/profile', icon: <Person fontSize="small" /> },
+    { text: t('sidebar.helper'), path: '/help', icon: <HelpOutline fontSize="small" /> },
   ];
 
   return (

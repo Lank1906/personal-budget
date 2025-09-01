@@ -28,5 +28,17 @@
       "notfound":{
         "title":"Oops! Trang bạn tìm không tồn tại.",
         "backToHome":"Quay về Trang chủ"
+      },
+      "sidebar":{
+        "home":"Trang chủ",
+        "transaction":"Giao dịch",
+        "category":"Danh mục",
+        "wallet":"Ví/ Tài khoản",
+        "report":"Thống kê",
+        "budget":"Ngân sách",
+        "target":"Mục tiêu",
+        "setting":"Cài đặt",
+        "account":"Tài khoản",
+        "helper":"Trợ giúp"
       }
 }
