@@ -20,20 +20,24 @@ const SidebarMenu = ({ collapsed }: SidebarProps) => {
   const { t } = useTranslation();
 
   const menuItems = [
-    { text: t('sidebar.home'), path: '/', icon: <Dashboard fontSize="small" /> },
+    { text: t('sidebar.home'), path: '/user', icon: <Dashboard fontSize="small" /> },
     {
       text: t('sidebar.transaction'),
       path: '/transactions',
       icon: <AccountBalanceWallet fontSize="small" />,
     },
-    { text: t('sidebar.category'), path: '/categories', icon: <Category fontSize="small" /> },
-    { text: t('sidebar.wallet'), path: '/wallets', icon: <CreditCard fontSize="small" /> },
-    { text: t('sidebar.report'), path: '/reports', icon: <BarChart fontSize="small" /> },
-    { text: t('sidebar.budget'), path: '/budget', icon: <PieChart fontSize="small" /> },
-    { text: t('sidebar.target'), path: '/goals', icon: <Flag fontSize="small" /> },
-    { text: t('sidebar.setting'), path: '/settings', icon: <Settings fontSize="small" /> },
-    { text: t('sidebar.account'), path: '/settings/profile', icon: <Person fontSize="small" /> },
-    { text: t('sidebar.helper'), path: '/help', icon: <HelpOutline fontSize="small" /> },
+    { text: t('sidebar.category'), path: '/user/categories', icon: <Category fontSize="small" /> },
+    { text: t('sidebar.wallet'), path: '/user/wallets', icon: <CreditCard fontSize="small" /> },
+    { text: t('sidebar.report'), path: '/user/reports', icon: <BarChart fontSize="small" /> },
+    { text: t('sidebar.budget'), path: '/user/budget', icon: <PieChart fontSize="small" /> },
+    { text: t('sidebar.target'), path: '/user/goals', icon: <Flag fontSize="small" /> },
+    { text: t('sidebar.setting'), path: '/user/settings', icon: <Settings fontSize="small" /> },
+    {
+      text: t('sidebar.account'),
+      path: '/user/settings/profile',
+      icon: <Person fontSize="small" />,
+    },
+    { text: t('sidebar.helper'), path: '/user/help', icon: <HelpOutline fontSize="small" /> },
   ];
 
   return (

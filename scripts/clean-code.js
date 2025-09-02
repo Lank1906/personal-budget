@@ -18,7 +18,7 @@ filesToClean.forEach((filePath) => {
   try {
     code = code.replace(/^\s*console\.[a-z]+\([^;]*\);?\s*$/gm, '');
     code = code.replace(/^\s*debugger;?\s*$/gm, '');
-    code = code.replace(/\/\/(?!\s*https?:\/\/).*$/gm, '');
+    code = code.replace(/(^|\s)\/\/(?!\s*(https?:)?\/\/).*$/gm, '');
     code = code.replace(/\/\*[^]*?\*\//gm, '');
     code = code.replace(/\n{3,}/g, '\n\n');
 
