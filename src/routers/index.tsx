@@ -1,9 +1,12 @@
-import React, { Suspense, lazy } from 'react';
+import React, { Suspense, lazy, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import PrivateRoute from './PrivateRoute';
 import MainLayout from '../layouts';
-import { useSelector } from 'react-redux';
-import { RootState } from '../store';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '../store';
+import { onAuthStateChanged } from 'firebase/auth';
+import { auth } from '../firebase';
+import { logout, setUser } from '../store/slices/userSlice';
 
 const LoginPage = lazy(() => import('../pages/LoginPage'));
 const NotFoundPage = lazy(() => import('../pages/NotFoundPage'));
@@ -11,6 +14,22 @@ const HomePage = lazy(() => import('../pages/HomePage'));
 
 const AppRouter: React.FC = () => {
   const { user } = useSelector((state: RootState) => state.user);
+  const dispatch = useDispatch<AppDispatch>();
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
+      const expireAt = localStorage.getItem('auth_expire_at');
+
+      if (expireAt && Date.now() > Number(expireAt)) {
+        dispatch(logout({ successFn: () => (window.location.href = '/login') }));
+        dispatch(setUser(null));
+      } else {
+        dispatch(setUser(currentUser));
+      }
+    });
+
+    return () => unsubscribe();
+  }, []);
   const userRole = user?.email ? 'user' : 'no login';
 
   return (

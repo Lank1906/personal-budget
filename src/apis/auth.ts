@@ -8,12 +8,15 @@ import {
   User,
   GoogleAuthProvider,
   signInWithPopup,
+  setPersistence,
+  browserLocalPersistence,
 } from 'firebase/auth';
 
 import { callFirebaseApi } from './firebase';
 import { CallApiOption } from '../types/api';
 import { ApiResult } from '../types/apiResult';
 import i18n from '../i18n';
+import { EXP_KEY } from '../constants';
 
 export class FirebaseAuthService {
   register(email: string, password: string, options?: CallApiOption<User>): ApiResult<User> {
@@ -79,7 +82,10 @@ export class FirebaseAuthService {
   logout(options?: CallApiOption<void>): ApiResult<void> {
     return callFirebaseApi({
       action: () => signOut(auth),
-      successFn: options?.successFn,
+      successFn: () => {
+        options?.successFn;
+        localStorage.removeItem(EXP_KEY);
+      },
       failFn: options?.failFn,
       successMessage: options?.successMessage || (i18n.t('login.logoutSuccess') as string),
       errorMessage: options?.errorMessage || (i18n.t('login.logoutFail') as string),
@@ -89,5 +95,11 @@ export class FirebaseAuthService {
 
   getCurrentUser(): User | null {
     return auth.currentUser;
+  }
+
+  async loginOrRegisterSuccess() {
+    await setPersistence(auth, browserLocalPersistence);
+    const expireAt = Date.now() + 7 * 24 * 60 * 60 * 1000;
+    localStorage.setItem(EXP_KEY, expireAt.toString());
   }
 }
