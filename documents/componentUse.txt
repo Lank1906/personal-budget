@@ -1,0 +1,20 @@
+/**
+ * CustomTable.tsx
+ * A single-file, production-ready React + TypeScript table component using Tailwind CSS.
+ * Features:
+ *  - columns definition with custom cell renderer
+ *  - client-side search
+ *  - client-side sorting (multi-type aware)
+ *  - pagination with page-size selector
+ *  - selectable rows (checkboxes) and select-all
+ *  - optional row actions column
+ *
+ * Usage:
+ * <CustomTable
+ *   columns={[{ key: 'id', header: 'ID', sortable: true }, { key: 'name', header: 'Name', sortable: true }]}
+ *   data={[{ id: 1, name: 'Alice' }, { id: 2, name: 'Bob' }]}
+ *   pageSizeOptions={[5,10,20]}
+ *   selectable
+ *   onSelectionChange={(selected) => console.log(selected)}
+ * />
+ */
