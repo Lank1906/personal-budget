@@ -7,26 +7,26 @@ export const getAppTheme = (mode: 'light' | 'dark') =>
       ...(mode === 'light'
         ? {
             background: {
-              default: 'var(--color-bg-light)',
-              paper: 'var(--color-paper-light)',
+              default: '#f5f5f5',
+              paper: '#ffffff',
             },
             text: {
-              primary: 'var(--color-text-light)',
+              primary: '#1f2937',
             },
             custom: {
-              sidebar: 'var(--color-sidebar-light)',
+              sidebar: '#e5e7eb',
             },
           }
         : {
             background: {
-              default: 'var(--color-bg-dark)',
-              paper: 'var(--color-paper-dark)',
+              default: '#111827',
+              paper: '#1f2937',
             },
             text: {
-              primary: 'var(--color-text-dark)',
+              primary: '#f9fafb',
             },
             custom: {
-              sidebar: 'var(--color-sidebar-light)',
+              sidebar: '#1f2937',
               transition: 'all ease .2s',
             },
           }),

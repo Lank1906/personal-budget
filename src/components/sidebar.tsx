@@ -23,7 +23,7 @@ const SidebarMenu = ({ collapsed }: SidebarProps) => {
     { text: t('sidebar.home'), path: '/user', icon: <Dashboard fontSize="small" /> },
     {
       text: t('sidebar.transaction'),
-      path: '/transactions',
+      path: '/user/transactions',
       icon: <AccountBalanceWallet fontSize="small" />,
     },
     { text: t('sidebar.category'), path: '/user/categories', icon: <Category fontSize="small" /> },

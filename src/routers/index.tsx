@@ -11,6 +11,7 @@ import { logout, setUser } from '../store/slices/userSlice';
 const LoginPage = lazy(() => import('../pages/LoginPage'));
 const NotFoundPage = lazy(() => import('../pages/NotFoundPage'));
 const HomePage = lazy(() => import('../pages/HomePage'));
+const TransactionPage = lazy(() => import('../pages/TransactionPage'));
 
 const AppRouter: React.FC = () => {
   const { user } = useSelector((state: RootState) => state.user);
@@ -47,6 +48,7 @@ const AppRouter: React.FC = () => {
           <Route element={<PrivateRoute allowedRoles={['user', 'admin']} userRole={userRole} />}>
             <Route path="/user" element={<MainLayout />}>
               <Route index element={<HomePage />} />
+              <Route path="transactions" element={<TransactionPage />} />
             </Route>
           </Route>
 

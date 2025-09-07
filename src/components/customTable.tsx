@@ -1,4 +1,20 @@
 import React, { useMemo, useState } from 'react';
+import {
+  Box,
+  Button,
+  Checkbox,
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TablePagination,
+  TableRow,
+  TextField,
+  Typography,
+} from '@mui/material';
+import { ArrowUpward, ArrowDownward, SwapVert } from '@mui/icons-material';
 import { Column, CustomTableProps, Row } from '../types/table';
 
 export default function CustomTable<RowType extends Row>({
@@ -7,7 +23,6 @@ export default function CustomTable<RowType extends Row>({
   initialSortBy = null,
   pageSizeOptions = [5, 10, 20],
   defaultPageSize = 10,
-  className = '',
   searchable = true,
   selectable = false,
   onSelectionChange,
@@ -16,8 +31,8 @@ export default function CustomTable<RowType extends Row>({
 }: CustomTableProps<RowType>) {
   const [query, setQuery] = useState('');
   const [sortBy, setSortBy] = useState<{ key: string; desc?: boolean } | null>(initialSortBy);
-  const [page, setPage] = useState(1);
-  const [pageSize, setPageSize] = useState(defaultPageSize);
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(defaultPageSize);
   const [selectedSet, setSelectedSet] = useState<Record<string, boolean>>({});
 
   const filtered = useMemo(() => {
@@ -38,26 +53,23 @@ export default function CustomTable<RowType extends Row>({
     arr.sort((a, b) => {
       const va = (a as any)[key];
       const vb = (b as any)[key];
-
       if (va == null && vb == null) return 0;
       if (va == null) return -1;
       if (vb == null) return 1;
       if (typeof va === 'number' && typeof vb === 'number') return va - vb;
-
       if (va instanceof Date && vb instanceof Date) return +va - +vb;
-
       return String(va).localeCompare(String(vb), undefined, { numeric: true });
     });
     if (desc) arr.reverse();
     return arr;
-  }, [filtered, sortBy, columns]);
+  }, [filtered, sortBy]);
 
-  const pageCount = Math.max(1, Math.ceil(sorted.length / pageSize));
-  const currentPage = Math.min(page, pageCount);
   const pageData = useMemo(() => {
-    const start = (currentPage - 1) * pageSize;
-    return sorted.slice(start, start + pageSize);
-  }, [sorted, currentPage, pageSize]);
+    const start = page * rowsPerPage;
+    return sorted.slice(start, start + rowsPerPage);
+  }, [sorted, page, rowsPerPage]);
+
+  const isRowSelected = (r: RowType) => !!selectedSet[String(rowKey(r))];
 
   const toggleRow = (r: RowType) => {
     const k = String(rowKey(r));
@@ -65,8 +77,7 @@ export default function CustomTable<RowType extends Row>({
       const next = { ...s };
       if (next[k]) delete next[k];
       else next[k] = true;
-      const selectedRows = data.filter((row) => next[String(rowKey(row))]);
-      onSelectionChange?.(selectedRows as RowType[]);
+      onSelectionChange?.(data.filter((row) => next[String(rowKey(row))]) as RowType[]);
       return next;
     });
   };
@@ -75,22 +86,15 @@ export default function CustomTable<RowType extends Row>({
     setSelectedSet((s) => {
       const next = { ...s };
       const allSelected = pageData.every((r) => next[String(rowKey(r))]);
-      if (allSelected) {
-        pageData.forEach((r) => delete next[String(rowKey(r))]);
-      } else {
-        pageData.forEach((r) => (next[String(rowKey(r))] = true));
-      }
-      const selectedRows = data.filter((row) => next[String(rowKey(row))]);
-      onSelectionChange?.(selectedRows as RowType[]);
+      if (allSelected) pageData.forEach((r) => delete next[String(rowKey(r))]);
+      else pageData.forEach((r) => (next[String(rowKey(r))] = true));
+      onSelectionChange?.(data.filter((row) => next[String(rowKey(row))]) as RowType[]);
       return next;
     });
   };
 
-  const isRowSelected = (r: RowType) => !!selectedSet[String(rowKey(r))];
-
   const onSortClick = (col: Column<RowType>) => {
     if (!col.sortable) return;
-    setPage(1);
     setSortBy((cur) => {
       if (!cur || cur.key !== col.key) return { key: col.key, desc: false };
       return { key: col.key, desc: !cur.desc };
@@ -98,173 +102,96 @@ export default function CustomTable<RowType extends Row>({
   };
 
   return (
-    <div className={`w-full bg-white rounded-2xl shadow-sm p-4 ${className}`}>
-      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-2 mb-4">
-        <div className="flex items-center gap-2">
-          {searchable && (
-            <input
-              value={query}
-              onChange={(e) => {
-                setQuery(e.target.value);
-                setPage(1);
-              }}
-              placeholder="Search..."
-              className="px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-offset-1"
-            />
-          )}
-          <div className="text-sm text-slate-500">
-            {sorted.length} result{sorted.length !== 1 ? 's' : ''}
-          </div>
-        </div>
-
-        <div className="flex items-center gap-2">
-          <div className="text-sm">Rows per page:</div>
-          <select
-            value={pageSize}
+    <Paper>
+      {}
+      <Box p={2} display="flex" justifyContent="space-between" alignItems="center">
+        {searchable && (
+          <TextField
+            size="small"
+            label="Search"
+            value={query}
             onChange={(e) => {
-              setPageSize(Number(e.target.value));
-              setPage(1);
+              setQuery(e.target.value);
+              setPage(0);
             }}
-            className="px-2 py-1 border rounded-md"
-          >
-            {pageSizeOptions.map((n) => (
-              <option key={n} value={n}>
-                {n}
-              </option>
-            ))}
-          </select>
-        </div>
-      </div>
+          />
+        )}
+        <Typography variant="body2" color="text.secondary">
+          {sorted.length} result{sorted.length !== 1 ? 's' : ''}
+        </Typography>
+      </Box>
 
-      <div className="overflow-x-auto">
-        <table className="w-full table-auto border-collapse">
-          <thead>
-            <tr className="text-sm text-slate-600 border-b">
+      <TableContainer>
+        <Table size="small">
+          <TableHead>
+            <TableRow>
               {selectable && (
-                <th className="px-3 py-2 text-left w-10">
-                  <input
-                    type="checkbox"
-                    onChange={toggleSelectAllOnPage}
+                <TableCell padding="checkbox">
+                  <Checkbox
                     checked={pageData.length > 0 && pageData.every(isRowSelected)}
-                    aria-label="Select all rows on this page"
+                    onChange={toggleSelectAllOnPage}
                   />
-                </th>
+                </TableCell>
               )}
-
               {columns.map((col) => (
-                <th key={col.key} className={`px-3 py-2 text-left select-none ${col.width ?? ''}`}>
-                  <button
+                <TableCell key={col.key}>
+                  <Button
+                    endIcon={
+                      sortBy?.key === col.key ? (
+                        sortBy.desc ? (
+                          <ArrowDownward fontSize="small" />
+                        ) : (
+                          <ArrowUpward fontSize="small" />
+                        )
+                      ) : (
+                        <SwapVert fontSize="small" />
+                      )
+                    }
                     onClick={() => onSortClick(col)}
-                    className="flex items-center gap-2 w-full text-left"
                   >
-                    <span>{col.header}</span>
-                    {col.sortable && (
-                      <span className="text-xs opacity-60">
-                        {sortBy?.key === col.key ? (sortBy.desc ? '▾' : '▴') : '↕'}
-                      </span>
-                    )}
-                  </button>
-                </th>
+                    {col.header}
+                  </Button>
+                </TableCell>
               ))}
+              {rowActions && <TableCell>Actions</TableCell>}
+            </TableRow>
+          </TableHead>
 
-              {rowActions && <th className="px-3 py-2 w-24">Actions</th>}
-            </tr>
-          </thead>
-
-          <tbody>
-            {pageData.length === 0 && (
-              <tr>
-                <td
-                  colSpan={columns.length + (selectable ? 1 : 0) + (rowActions ? 1 : 0)}
-                  className="py-8 text-center text-slate-500"
-                >
-                  No rows
-                </td>
-              </tr>
-            )}
-
+          <TableBody>
             {pageData.map((row, i) => (
-              <tr
-                key={String(rowKey(row)) + '-' + i}
-                className={`border-b last:border-b-0 hover:bg-slate-50 ${isRowSelected(row) ? 'bg-slate-50' : ''}`}
-              >
+              <TableRow key={String(rowKey(row)) + '-' + i} hover selected={isRowSelected(row)}>
                 {selectable && (
-                  <td className="px-3 py-2">
-                    <input
-                      type="checkbox"
-                      checked={isRowSelected(row)}
-                      onChange={() => toggleRow(row)}
-                      aria-label={`Select row ${String(rowKey(row))}`}
-                    />
-                  </td>
+                  <TableCell padding="checkbox">
+                    <Checkbox checked={isRowSelected(row)} onChange={() => toggleRow(row)} />
+                  </TableCell>
                 )}
-
                 {columns.map((col) => (
-                  <td
-                    key={col.key}
-                    className={`px-3 py-3 align-top ${col.align === 'right' ? 'text-right' : col.align === 'center' ? 'text-center' : 'text-left'}`}
-                  >
+                  <TableCell key={col.key} align={col.align || 'left'}>
                     {col.render
                       ? col.render((row as any)[col.key], row)
                       : String((row as any)[col.key] ?? '')}
-                  </td>
+                  </TableCell>
                 ))}
-
-                {rowActions && <td className="px-3 py-2">{rowActions(row)}</td>}
-              </tr>
+                {rowActions && <TableCell>{rowActions(row)}</TableCell>}
+              </TableRow>
             ))}
-          </tbody>
-        </table>
-      </div>
+          </TableBody>
+        </Table>
+      </TableContainer>
 
       {}
-      <div className="mt-4 flex items-center justify-between gap-2">
-        <div className="text-sm text-slate-600">
-          Page {currentPage} of {pageCount}
-        </div>
-
-        <div className="flex items-center gap-2">
-          <button
-            onClick={() => setPage(1)}
-            disabled={currentPage === 1}
-            className="px-3 py-1 border rounded disabled:opacity-50"
-          >
-            « First
-          </button>
-          <button
-            onClick={() => setPage((p) => Math.max(1, p - 1))}
-            disabled={currentPage === 1}
-            className="px-3 py-1 border rounded disabled:opacity-50"
-          >
-            ‹ Prev
-          </button>
-
-          <input
-            type="number"
-            value={currentPage}
-            onChange={(e) => {
-              const v = Number(e.target.value || 1);
-              if (Number.isFinite(v)) setPage(Math.min(Math.max(1, Math.floor(v)), pageCount));
-            }}
-            className="w-16 text-center px-2 py-1 border rounded"
-          />
-
-          <button
-            onClick={() => setPage((p) => Math.min(pageCount, p + 1))}
-            disabled={currentPage === pageCount}
-            className="px-3 py-1 border rounded disabled:opacity-50"
-          >
-            Next ›
-          </button>
-          <button
-            onClick={() => setPage(pageCount)}
-            disabled={currentPage === pageCount}
-            className="px-3 py-1 border rounded disabled:opacity-50"
-          >
-            Last »
-          </button>
-        </div>
-      </div>
-    </div>
+      <TablePagination
+        component="div"
+        count={sorted.length}
+        page={page}
+        onPageChange={(e, newPage) => setPage(newPage)}
+        rowsPerPage={rowsPerPage}
+        onRowsPerPageChange={(e) => {
+          setRowsPerPage(parseInt(e.target.value, 10));
+          setPage(0);
+        }}
+        rowsPerPageOptions={pageSizeOptions}
+      />
+    </Paper>
   );
 }
