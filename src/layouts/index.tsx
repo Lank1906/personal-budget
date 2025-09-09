@@ -15,7 +15,7 @@ import Copyright from '../components/copyright';
 import { AppDispatch } from '../store';
 import { useDispatch } from 'react-redux';
 import { logout } from '../store/slices/userSlice';
-import ChangeLanguage from '../components/changeLanguage';
+import ChangeLanguage from '../components/ChangeLanguage';
 
 const MainLayout = () => {
   const location = useLocation();

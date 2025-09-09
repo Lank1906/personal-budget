@@ -1,20 +1,227 @@
 /**
  * CustomTable.tsx
- * A single-file, production-ready React + TypeScript table component using Tailwind CSS.
- * Features:
- *  - columns definition with custom cell renderer
- *  - client-side search
- *  - client-side sorting (multi-type aware)
- *  - pagination with page-size selector
- *  - selectable rows (checkboxes) and select-all
- *  - optional row actions column
  *
- * Usage:
- * <CustomTable
- *   columns={[{ key: 'id', header: 'ID', sortable: true }, { key: 'name', header: 'Name', sortable: true }]}
- *   data={[{ id: 1, name: 'Alice' }, { id: 2, name: 'Bob' }]}
- *   pageSizeOptions={[5,10,20]}
- *   selectable
- *   onSelectionChange={(selected) => console.log(selected)}
- * />
+ * A fully-featured, production-ready React + TypeScript table component using Tailwind CSS.
+ *
+ * Features:
+ *  - Columns definition with optional custom cell renderers (`render` function per column)
+ *  - Client-side search/filtering across all columns
+ *  - Client-side sorting (numeric, string, and Date aware)
+ *  - Pagination with configurable page sizes and navigation controls
+ *  - Selectable rows with checkboxes, including "select all" per page
+ *  - Optional row actions column (e.g., Edit/Delete buttons)
+ *  - Responsive design with horizontal scrolling
+ *
+ * Props:
+ * @template RowType - The type of a row in the table (e.g., `{ id: number, name: string }`)
+ *
+ * @param {Column<RowType>[]} columns - Array of column definitions:
+ *    - key: string - key in the row object
+ *    - header: string - column header text
+ *    - sortable?: boolean - enable sorting for this column
+ *    - align?: 'left' | 'center' | 'right' - text alignment
+ *    - width?: string - Tailwind width class (optional)
+ *    - render?: (value: any, row: RowType) => ReactNode - custom cell renderer
+ *
+ * @param {RowType[]} data - Array of row objects to display
+ * @param {boolean} [selectable=false] - Enable row selection checkboxes
+ * @param {(selected: RowType[]) => void} [onSelectionChange] - Callback with selected rows
+ * @param {boolean} [searchable=true] - Enable search input box
+ * @param {number[]} [pageSizeOptions=[5,10,20]] - Dropdown options for rows per page
+ * @param {number} [defaultPageSize=10] - Default rows per page
+ * @param {Column<RowType> | null} [initialSortBy=null] - Default sort column & direction
+ * @param {(row: RowType) => ReactNode} [rowActions] - Optional JSX for actions column
+ * @param {(row: RowType) => string} [rowKey] - Function to generate unique key for each row (default: row.id or JSON.stringify(row))
+ * @param {string} [className=''] - Optional extra Tailwind CSS classes for table container
+ *
+ * Usage Example:
+ * ```tsx
+ * import CustomTable from './CustomTable';
+ *
+ * type User = { id: number; name: string; age: number; role: string };
+ *
+ * const columns = [
+ *   { key: 'id', header: 'ID', sortable: true },
+ *   { key: 'name', header: 'Name', sortable: true },
+ *   { key: 'age', header: 'Age', sortable: true, align: 'right' },
+ *   { key: 'role', header: 'Role', sortable: true }
+ * ];
+ *
+ * const data: User[] = [
+ *   { id: 1, name: 'Alice', age: 25, role: 'Admin' },
+ *   { id: 2, name: 'Bob', age: 30, role: 'User' }
+ * ];
+ *
+ * function App() {
+ *   return (
+ *     <CustomTable<User>
+ *       columns={columns}
+ *       data={data}
+ *       pageSizeOptions={[5,10,20]}
+ *       selectable
+ *       onSelectionChange={(selected) => console.log('Selected rows:', selected)}
+ *       rowActions={(row) => (
+ *         <button onClick={() => alert(`Edit ${row.name}`)}>Edit</button>
+ *       )}
+ *     />
+ *   );
+ * }
+ * ```
+ *
+ * Notes:
+ * - Sorting is type-aware: numeric, string, and Date values are sorted correctly.
+ * - The `render` function allows custom formatting (e.g., currency, colored text, emoji).
+ * - The table container is horizontally scrollable if columns overflow.
+ * - The `rowKey` function ensures correct selection handling for rows without a numeric `id`.
+ */
+/**
+ * RowFormModal.tsx
+ *
+ * A generic, reusable form modal component for adding or editing any row in a table.
+ * Fully customizable fields based on a configuration array.
+ *
+ * Features:
+ *  - Generic typing: supports any row type (T extends Record<string, any>)
+ *  - Dynamic fields: text, number, date, select
+ *  - Pre-fills form when editing existing row
+ *  - Reusable for multiple tables and row types
+ *  - MUI styled and responsive
+ *
+ * Props:
+ * @template T - Type of row object (e.g., { id: number, name: string, age: number })
+ *
+ * @param {boolean} open - Controls modal visibility
+ * @param {T} [initialData] - Optional initial data for editing a row
+ * @param {FieldConfig[]} fields - Array of field configuration objects
+ * @param {() => void} onClose - Callback when modal is closed
+ * @param {(data: T) => void} onSubmit - Callback when Save button is clicked
+ * @param {string} [title] - Modal title (default: "Edit / Add")
+ * @param {string} [confirmText] - Save button text (default: "Save")
+ *
+ * FieldConfig:
+ * @typedef FieldConfig
+ * @property {string} key - Key in the row object
+ * @property {string} label - Label shown in form
+ * @property {'text'|'number'|'date'|'select'} [type='text'] - Input type
+ * @property {string[]} [options] - Options for select input
+ *
+ * Usage Example:
+ * ```tsx
+ * import RowFormModal, { FieldConfig } from './RowFormModal';
+ *
+ * type UserRow = { id: number; name: string; age: number; role: string };
+ *
+ * const fields: FieldConfig[] = [
+ *   { key: 'name', label: 'Name' },
+ *   { key: 'age', label: 'Age', type: 'number' },
+ *   { key: 'role', label: 'Role', type: 'select', options: ['Admin','User'] }
+ * ];
+ *
+ * function UsersPage() {
+ *   const [data, setData] = useState<UserRow[]>([]);
+ *   const [modalOpen, setModalOpen] = useState(false);
+ *   const [editingRow, setEditingRow] = useState<UserRow | null>(null);
+ *
+ *   const handleAdd = () => { setEditingRow(null); setModalOpen(true); };
+ *   const handleEdit = (row: UserRow) => { setEditingRow(row); setModalOpen(true); };
+ *
+ *   const handleSubmit = (rowData: UserRow) => {
+ *     if (editingRow) {
+ *       setData((d) => d.map(r => r.id === editingRow.id ? { ...r, ...rowData } : r));
+ *     } else {
+ *       setData((d) => [...d, { ...rowData, id: Date.now() }]);
+ *     }
+ *   };
+ *
+ *   return (
+ *     <>
+ *       <button onClick={handleAdd}>Add User</button>
+ *       <RowFormModal<UserRow>
+ *         open={modalOpen}
+ *         initialData={editingRow || undefined}
+ *         fields={fields}
+ *         onClose={() => setModalOpen(false)}
+ *         onSubmit={handleSubmit}
+ *         title={editingRow ? 'Edit User' : 'Add User'}
+ *         confirmText="Save"
+ *       />
+ *     </>
+ *   );
+ * }
+ * ```
+ *
+ * Notes:
+ * - Supports any row type T; you only need to pass `fields` and `initialData`.
+ * - Fields of type `select` require `options`.
+ * - Can be reused across multiple tables, forms, and CRUD modals.
+ * - Fully MUI themed; responsive and accessible.
+ * - Works with Add and Edit actions seamlessly.
+ */
+/**
+ * ConfirmDialog.tsx
+ *
+ * A reusable confirmation modal component using MUI.
+ * Use it for any action that requires user confirmation (e.g., delete, submit, logout).
+ *
+ * Features:
+ *  - Fully MUI styled and responsive
+ *  - Customizable title, description, confirm/cancel text
+ *  - Optional color for confirm button
+ *  - Works with any action callback
+ *
+ * Props:
+ *
+ * @param {boolean} open - Controls whether the dialog is visible
+ * @param {string} [title='Confirm'] - Title text at the top of the dialog
+ * @param {string} [description='Are you sure?'] - Main description or message
+ * @param {() => void} onCancel - Callback when the user clicks Cancel or closes the dialog
+ * @param {() => void} onConfirm - Callback when the user clicks Confirm
+ * @param {string} [confirmText='Yes'] - Text for confirm button
+ * @param {string} [cancelText='Cancel'] - Text for cancel button
+ *
+ * Usage Example:
+ * ```tsx
+ * import React, { useState } from 'react';
+ * import ConfirmDialog from './ConfirmDialog';
+ *
+ * function TransactionsPage() {
+ *   const [confirmOpen, setConfirmOpen] = useState(false);
+ *   const [selectedId, setSelectedId] = useState<number | null>(null);
+ *
+ *   const handleDeleteClick = (id: number) => {
+ *     setSelectedId(id);
+ *     setConfirmOpen(true);
+ *   };
+ *
+ *   const handleConfirmDelete = () => {
+ *     if (selectedId !== null) {
+ *       // delete logic here
+ *       console.log('Deleted id:', selectedId);
+ *     }
+ *     setConfirmOpen(false);
+ *     setSelectedId(null);
+ *   };
+ *
+ *   return (
+ *     <>
+ *       <button onClick={() => handleDeleteClick(42)}>Delete Transaction</button>
+ *
+ *       <ConfirmDialog
+ *         open={confirmOpen}
+ *         title="Delete Transaction"
+ *         description="Are you sure you want to delete this transaction?"
+ *         onCancel={() => setConfirmOpen(false)}
+ *         onConfirm={handleConfirmDelete}
+ *         confirmText="Delete"
+ *         cancelText="Cancel"
+ *       />
+ *     </>
+ *   );
+ * }
+ * ```
+ *
+ * Notes:
+ * - Can be reused for any confirmation action across your app.
+ * - Supports full MUI theming; confirm button can be styled via MUI `color` prop.
+ * - Keeps UI consistent with other MUI dialogs.
  */
