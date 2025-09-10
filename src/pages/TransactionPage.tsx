@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import CustomTable from '../components/CustomTable';
+import { Box, Typography, Button, Paper, IconButton } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
+import CustomTable from '../components/CustomTable';
 
 type Transaction = {
   id: number;
@@ -53,16 +54,16 @@ export default function TransactionPage() {
       sortable: true,
       align: 'right' as const,
       render: (val: number) => (
-        <span className={val >= 0 ? 'text-green-600' : 'text-red-600'}>
+        <Typography variant="body2" sx={{ color: val >= 0 ? 'success.main' : 'error.main' }}>
           {val >= 0 ? '+' : ''}
           {val.toLocaleString()}₫
-        </span>
+        </Typography>
       ),
     },
   ];
 
   const handleDelete = (id: number) => {
-    if (confirm('Delete this transaction?')) {
+    if (window.confirm('Delete this transaction?')) {
       setData((d) => d.filter((row) => row.id !== id));
     }
   };
@@ -72,37 +73,37 @@ export default function TransactionPage() {
   };
 
   return (
-    <div className="p-6">
-      <div className="flex items-center justify-between mb-4">
-        <h1 className="text-xl font-bold">Transactions</h1>
-        <button className="px-4 py-2 bg-green-600 text-white rounded-lg shadow hover:bg-green-700">
+    <Box p={3}>
+      {}
+      <Box display="flex" justifyContent="space-between" alignItems="center" mb={3}>
+        <Typography variant="h5" fontWeight="bold">
+          Transactions
+        </Typography>
+        <Button variant="contained" color="success">
           + Add Transaction
-        </button>
-      </div>
+        </Button>
+      </Box>
 
-      <CustomTable<Transaction>
-        columns={columns}
-        data={data}
-        selectable
-        searchable
-        rowActions={(row) => (
-          <div className="flex gap-2">
-            <button
-              onClick={() => handleEdit(row)}
-              className="p-1 text-blue-600 hover:text-blue-800"
-            >
-              <EditIcon fontSize="small" />
-            </button>
-            <button
-              onClick={() => handleDelete(row.id)}
-              className="p-1 text-red-600 hover:text-red-800"
-            >
-              <DeleteIcon fontSize="small" />
-            </button>
-          </div>
-        )}
-        onSelectionChange={(selected) => alert(selected)}
-      />
-    </div>
+      {}
+      <Paper elevation={2}>
+        <CustomTable<Transaction>
+          columns={columns}
+          data={data}
+          selectable
+          searchable
+          rowActions={(row) => (
+            <Box display="flex" gap={1}>
+              <IconButton color="primary" onClick={() => handleEdit(row)} size="small">
+                <EditIcon fontSize="small" />
+              </IconButton>
+              <IconButton color="error" onClick={() => handleDelete(row.id)} size="small">
+                <DeleteIcon fontSize="small" />
+              </IconButton>
+            </Box>
+          )}
+          onSelectionChange={(selected) => alert(selected)}
+        />
+      </Paper>
+    </Box>
   );
 }
