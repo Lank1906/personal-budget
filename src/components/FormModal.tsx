@@ -6,15 +6,15 @@ import {
   DialogActions,
   Button,
   TextField,
-  MenuItem,
   Grid,
-  Paper,
+  Typography,
+  Box,
 } from '@mui/material';
 
 export type FieldConfig = {
   key: string;
   label: string;
-  type?: 'text' | 'number' | 'date' | 'select';
+  type?: 'text' | 'number' | 'date' | 'select' | 'password';
   options?: string[];
   placeholder?: string;
 };
@@ -48,41 +48,22 @@ export default function RowFormModal<T extends Record<string, any>>({
     setForm((f) => ({ ...f, [key]: value }));
   };
 
-  const handleSubmit = () => {
-    onSubmit(form);
-    onClose();
-  };
+  const columns = fields.length > 8 ? 3 : fields.length > 4 ? 2 : 1;
+  const gridSize = 12 / columns;
 
   const renderField = (field: FieldConfig) => {
     const value = form[field.key] ?? '';
+
     return (
-      <Grid item xs={12} sm={6} key={field.key}>
-        {field.type === 'select' && field.options ? (
-          <TextField
-            select
-            fullWidth
-            label={field.label}
-            size="small"
-            variant="outlined"
-            value={value}
-            onChange={(e) => handleChange(field.key, e.target.value)}
-            InputLabelProps={{
-              shrink: true,
-              style: { fontSize: 14, fontWeight: 600, color: '#1976d2' },
-            }}
-          >
-            {field.options.map((opt) => (
-              <MenuItem key={opt} value={opt}>
-                {opt}
-              </MenuItem>
-            ))}
-          </TextField>
-        ) : (
+      <Grid item xs={12} sm={gridSize} key={field.key}>
+        <Box mb={1}>
+          <Typography fontWeight={600} mb={0.5} sx={{ color: 'inherit' }}>
+            {field.label}
+          </Typography>
           <TextField
             fullWidth
-            label={field.label}
+            type={field.type === 'password' ? 'password' : field.type || 'text'}
             placeholder={field.placeholder}
-            type={field.type || 'text'}
             size="small"
             variant="outlined"
             value={value}
@@ -92,35 +73,35 @@ export default function RowFormModal<T extends Record<string, any>>({
                 field.type === 'number' ? Number(e.target.value) : e.target.value,
               )
             }
-            InputLabelProps={{
-              shrink: true,
-              style: { fontSize: 14, fontWeight: 600, color: '#1976d2' },
-            }}
           />
-        )}
+        </Box>
       </Grid>
     );
   };
 
   return (
-    <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth>
+    <Dialog
+      open={open}
+      onClose={onClose}
+      PaperProps={{
+        sx: { p: 3, borderRadius: 3 },
+      }}
+    >
       <DialogTitle sx={{ fontWeight: 700, fontSize: '1.5rem', color: 'primary.main' }}>
         {title}
       </DialogTitle>
 
-      <DialogContent dividers sx={{ p: 3 }}>
-        <Paper elevation={2} sx={{ p: 3, borderRadius: 3 }}>
-          <Grid container spacing={2}>
-            {fields.map(renderField)}
-          </Grid>
-        </Paper>
+      <DialogContent sx={{ p: 3 }}>
+        <Grid container spacing={2}>
+          {fields.map(renderField)}
+        </Grid>
       </DialogContent>
 
       <DialogActions sx={{ px: 3, pb: 2 }}>
         <Button onClick={onClose} color="inherit">
           Hủy
         </Button>
-        <Button variant="contained" onClick={handleSubmit}>
+        <Button variant="contained" color="primary" onClick={() => onSubmit(form)}>
           {confirmText}
         </Button>
       </DialogActions>

@@ -22,6 +22,33 @@ const HomePage: React.FC = () => {
       type: 'select',
       options: ['Active', 'Inactive'],
     },
+    { key: 'id', label: 'ID', type: 'number' },
+    { key: 'name', label: 'Category Name', type: 'text' },
+    { key: 'description', label: 'Description', type: 'text' },
+    {
+      key: 'status',
+      label: 'Status',
+      type: 'select',
+      options: ['Active', 'Inactive'],
+    },
+    { key: 'id', label: 'ID', type: 'number' },
+    { key: 'name', label: 'Category Name', type: 'text' },
+    { key: 'description', label: 'Description', type: 'text' },
+    {
+      key: 'status',
+      label: 'Status',
+      type: 'select',
+      options: ['Active', 'Inactive'],
+    },
+    { key: 'id', label: 'ID', type: 'number' },
+    { key: 'name', label: 'Category Name', type: 'text' },
+    { key: 'description', label: 'Description', type: 'text' },
+    {
+      key: 'status',
+      label: 'Status',
+      type: 'select',
+      options: ['Active', 'Inactive'],
+    },
   ];
   type Category = {
     id: number;
