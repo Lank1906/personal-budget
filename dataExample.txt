@@ -37,6 +37,8 @@ groups (collection)                        👈 A family or group
         │     └── {categoryId}
         │           ├── name: string
         │           ├── type: string       # "income" | "expense"
+        |           ├── budget: number     # money for this category follow plan
+        |           ├── spent: number      # money used
         │           ├── icon: string
         │           ├── createdAt: timestamp
         │           └── createdBy: userId
@@ -56,7 +58,6 @@ groups (collection)                        👈 A family or group
               └── {groupAssetId}
                     ├── assetId: string        # reference to assets/{assetId}
                     ├── quantity: number       # total quantity currently held
-                    ├── totalValue: number     # quantity * current unitPrice
                     ├── createdBy: userId
                     ├── createdAt: timestamp
                     ├── updatedAt: timestamp
@@ -74,6 +75,5 @@ groups (collection)                        👈 A family or group
                                 ├── action: string     # "buy" | "sell" | "interest"
                                 ├── quantity: number   # positive for buy, negative for sell
                                 ├── priceAtTransaction: number   # price at the time
-                                ├── totalAmount: number           # quantity * priceAtTransaction
                                 ├── date: timestamp
                                 └── createdBy: userId
