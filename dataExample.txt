@@ -1,6 +1,5 @@
 users (collection)                         👈 Personal user information
-  └── {userId}
-        ├── email: string
+  └── {email}
         ├── displayName: string
         ├── photoURL: string
         ├── groups: array<string>          # List of groupIds the user joined
@@ -51,7 +50,6 @@ groups (collection)                        👈 A family or group
         │           ├── walletId: string
         │           ├── note: string
         │           ├── createdBy: userId
-        │           ├── date: timestamp
         │           └── createdAt: timestamp
         │
         └── assets (collection)            👈 Assets owned by this group

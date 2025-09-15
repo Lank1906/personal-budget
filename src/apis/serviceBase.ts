@@ -11,30 +11,11 @@ import {
   limit,
   orderBy,
   startAfter,
-  DocumentData,
-  QueryDocumentSnapshot,
   Firestore,
-  WhereFilterOp,
 } from 'firebase/firestore';
 
 import { callFirebaseApi } from './firebase';
-
-interface Pagination {
-  limit: number;
-  startAfterDoc?: QueryDocumentSnapshot<DocumentData> | null;
-}
-
-interface SearchOptions {
-  filters?: { field: string; operator: WhereFilterOp; value: any }[];
-  orderByField?: string;
-  orderDirection?: 'asc' | 'desc';
-  pagination?: Pagination;
-}
-
-interface Callbacks {
-  successFn?: (data: any) => void;
-  failFn?: (error: any) => void;
-}
+import { Callbacks, SearchOptions } from '../types/service';
 
 export class FirestoreService {
   private firestore: Firestore;
