@@ -5,7 +5,12 @@ import { db } from '../firebase';
 const userService = new FirestoreService(db, 'users');
 const groupService = new FirestoreService(db, 'groups');
 
-export async function initUserData(user: { email: string; displayName: string; photoURL: string }) {
+export async function initUserData(user: {
+  uid: string;
+  email: string;
+  displayName: string;
+  photoURL: string;
+}) {
   const userResult = await userService.getDoc(user.email);
 
   if (!userResult.success) {
@@ -14,7 +19,7 @@ export async function initUserData(user: { email: string; displayName: string; p
 
   if (!userResult.data) {
     await userService.updateDoc(
-      user.email,
+      user.uid,
       {
         displayName: user.displayName,
         photoURL: user.photoURL,
@@ -23,7 +28,7 @@ export async function initUserData(user: { email: string; displayName: string; p
         updatedAt: serverTimestamp(),
       },
       undefined,
-      { successMessage: '', errorMessage: '' },
+      { successMessage: 'Created', errorMessage: 'Error' },
     );
   }
 
@@ -36,7 +41,7 @@ export async function initUserData(user: { email: string; displayName: string; p
       updatedAt: serverTimestamp(),
     },
     undefined,
-    { successMessage: '', errorMessage: '' },
+    { successMessage: 'Created', errorMessage: 'Error' },
   );
 
   if (!groupResult.success) {
@@ -51,7 +56,7 @@ export async function initUserData(user: { email: string; displayName: string; p
       updatedAt: serverTimestamp(),
     },
     undefined,
-    { successMessage: '', errorMessage: '' },
+    { successMessage: 'Created', errorMessage: 'Error' },
   );
 
   await groupService.addSubCollectionDoc(groupId, 'wallets', {

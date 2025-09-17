@@ -3,6 +3,7 @@ import { User } from 'firebase/auth';
 import { FirebaseAuthService } from '../../apis/auth';
 import { userReqWithOptions, userState } from '../../types/user';
 import { CallApiOption } from '../../types/api';
+import { initUserData } from '../../apis/initData';
 
 const authService = new FirebaseAuthService();
 
@@ -23,8 +24,17 @@ export const register = createAsyncThunk<User, userReqWithOptions>(
   'user/register',
   async ({ email, password, options }, { rejectWithValue }) => {
     const res = await authService.register(email, password, { successFn: options?.successFn });
-    if (res.success) return res.data as User;
-    else return rejectWithValue(res.error);
+    if (res.success) {
+      const user = res.data as User;
+
+      await initUserData({
+        uid: user.uid,
+        email: user.email!,
+        displayName: user.displayName || 'Anonymous',
+        photoURL: user.photoURL || '',
+      });
+      return user;
+    } else return rejectWithValue(res.error);
   },
 );
 
@@ -32,8 +42,17 @@ export const loginWithGoogle = createAsyncThunk<User, CallApiOption>(
   'user/loginWithGoogle',
   async (options, { rejectWithValue }) => {
     const res = await authService.loginWithGoogle({ successFn: options?.successFn });
-    if (res.success) return res.data as User;
-    else return rejectWithValue(res.error);
+    if (res.success) {
+      const user = res.data as User;
+
+      await initUserData({
+        uid: user.uid,
+        email: user.email!,
+        displayName: user.displayName || 'Anonymous',
+        photoURL: user.photoURL || '',
+      });
+      return user;
+    } else return rejectWithValue(res.error);
   },
 );
 
