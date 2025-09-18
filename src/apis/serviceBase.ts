@@ -1,6 +1,7 @@
 import {
   collection,
   doc,
+  setDoc as fbSetDoc,
   addDoc as fbAddDoc,
   updateDoc as fbUpdateDoc,
   deleteDoc as fbDeleteDoc,
@@ -24,6 +25,26 @@ export class FirestoreService {
   constructor(firestore: Firestore, collectionName: string) {
     this.firestore = firestore;
     this.collectionName = collectionName;
+  }
+
+  setDoc(
+    id: string,
+    data: object,
+    callbacks?: Callbacks,
+    options?: { successMessage?: string; errorMessage?: string; disableToast?: boolean },
+  ) {
+    return callFirebaseApi({
+      action: async () => {
+        const docRef = doc(this.firestore, this.collectionName, id);
+        await fbSetDoc(docRef, data);
+        return id;
+      },
+      successFn: callbacks?.successFn,
+      failFn: callbacks?.failFn,
+      successMessage: options?.successMessage || 'Tạo tài liệu thành công',
+      errorMessage: options?.errorMessage || 'Tạo tài liệu thất bại',
+      disableToast: options?.disableToast ?? false,
+    });
   }
 
   addDoc(

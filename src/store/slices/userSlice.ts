@@ -28,7 +28,6 @@ export const register = createAsyncThunk<User, userReqWithOptions>(
       const user = res.data as User;
 
       await initUserData({
-        uid: user.uid,
         email: user.email!,
         displayName: user.displayName || 'Anonymous',
         photoURL: user.photoURL || '',
@@ -46,7 +45,6 @@ export const loginWithGoogle = createAsyncThunk<User, CallApiOption>(
       const user = res.data as User;
 
       await initUserData({
-        uid: user.uid,
         email: user.email!,
         displayName: user.displayName || 'Anonymous',
         photoURL: user.photoURL || '',
