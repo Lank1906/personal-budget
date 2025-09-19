@@ -17,6 +17,7 @@ import {
 
 import { callFirebaseApi } from './firebase';
 import { Callbacks, SearchOptions } from '../types/service';
+import { t } from 'i18next';
 
 export class FirestoreService {
   private firestore: Firestore;
@@ -41,8 +42,8 @@ export class FirestoreService {
       },
       successFn: callbacks?.successFn,
       failFn: callbacks?.failFn,
-      successMessage: options?.successMessage || 'Tạo tài liệu thành công',
-      errorMessage: options?.errorMessage || 'Tạo tài liệu thất bại',
+      successMessage: options?.successMessage || t<string>('baseService.setDocComplete'),
+      errorMessage: options?.errorMessage || t<string>('baseService.setDocFail'),
       disableToast: options?.disableToast ?? false,
     });
   }
@@ -60,8 +61,8 @@ export class FirestoreService {
       },
       successFn: callbacks?.successFn,
       failFn: callbacks?.failFn,
-      successMessage: options?.successMessage || 'Thêm tài liệu thành công',
-      errorMessage: options?.errorMessage || 'Thêm tài liệu thất bại',
+      successMessage: options?.successMessage || t<string>('baseService.addDocComplete'),
+      errorMessage: options?.errorMessage || t<string>('baseService.addDocFail'),
       disableToast: options?.disableToast ?? false,
     });
   }
@@ -79,8 +80,8 @@ export class FirestoreService {
       },
       successFn: callbacks?.successFn,
       failFn: callbacks?.failFn,
-      successMessage: options?.successMessage || 'Cập nhật tài liệu thành công',
-      errorMessage: options?.errorMessage || 'Cập nhật tài liệu thất bại',
+      successMessage: options?.successMessage || t<string>('baseService.updateDocComplete'),
+      errorMessage: options?.errorMessage || t<string>('baseService.updateDocFail'),
       disableToast: options?.disableToast ?? false,
     });
   }
@@ -97,8 +98,8 @@ export class FirestoreService {
       },
       successFn: callbacks?.successFn,
       failFn: callbacks?.failFn,
-      successMessage: options?.successMessage || 'Xóa tài liệu thành công',
-      errorMessage: options?.errorMessage || 'Xóa tài liệu thất bại',
+      successMessage: options?.successMessage || t<string>('baseService.deleteDocComplete'),
+      errorMessage: options?.errorMessage || t<string>('baseService.deleteDocFail'),
       disableToast: options?.disableToast ?? false,
     });
   }
@@ -117,7 +118,7 @@ export class FirestoreService {
       },
       failFn: callbacks?.failFn,
       successFn: callbacks?.successFn,
-      errorMessage: options?.errorMessage || 'Lấy tài liệu thất bại',
+      errorMessage: options?.errorMessage || t<string>('baseService.getDocFail'),
       disableToast: options?.disableToast ?? true,
     });
   }
@@ -167,7 +168,7 @@ export class FirestoreService {
       },
       failFn: callbacks?.failFn,
       successFn: callbacks?.successFn,
-      errorMessage: options?.errorMessage || 'Tìm kiếm tài liệu thất bại',
+      errorMessage: options?.errorMessage || t<string>('baseService.searchDocFail'),
       disableToast: options?.disableToast ?? true,
     });
   }
@@ -192,8 +193,8 @@ export class FirestoreService {
       },
       successFn: callbacks?.successFn,
       failFn: callbacks?.failFn,
-      successMessage: options?.successMessage || 'Thêm tài liệu con thành công',
-      errorMessage: options?.errorMessage || 'Thêm tài liệu con thất bại',
+      successMessage: options?.successMessage || t<string>('baseService.addSubDocComplete'),
+      errorMessage: options?.errorMessage || t<string>('baseService.addSubDocFail'),
       disableToast: options?.disableToast ?? false,
     });
   }
@@ -213,8 +214,8 @@ export class FirestoreService {
       },
       successFn: callbacks?.successFn,
       failFn: callbacks?.failFn,
-      successMessage: options?.successMessage || 'Cập nhật tài liệu con thành công',
-      errorMessage: options?.errorMessage || 'Cập nhật tài liệu con thất bại',
+      successMessage: options?.successMessage || t<string>('baseService.updateSubDocComplete'),
+      errorMessage: options?.errorMessage || t<string>('baseService.updateSubDocFail'),
       disableToast: options?.disableToast ?? false,
     });
   }
@@ -233,8 +234,8 @@ export class FirestoreService {
       },
       successFn: callbacks?.successFn,
       failFn: callbacks?.failFn,
-      successMessage: options?.successMessage || 'Xóa tài liệu con thành công',
-      errorMessage: options?.errorMessage || 'Xóa tài liệu con thất bại',
+      successMessage: options?.successMessage || t<string>('baseService.deleteSubDocComplete'),
+      errorMessage: options?.errorMessage || t<string>('baseService.deleteSubDocFail'),
       disableToast: options?.disableToast ?? false,
     });
   }
@@ -255,7 +256,7 @@ export class FirestoreService {
       },
       failFn: callbacks?.failFn,
       successFn: callbacks?.successFn,
-      errorMessage: options?.errorMessage || 'Lấy tài liệu con thất bại',
+      errorMessage: options?.errorMessage || t<string>('baseService.getSubDocFail'),
       disableToast: options?.disableToast ?? true,
     });
   }
@@ -312,7 +313,7 @@ export class FirestoreService {
       },
       failFn: callbacks?.failFn,
       successFn: callbacks?.successFn,
-      errorMessage: options?.errorMessage || 'Tìm kiếm tài liệu con thất bại',
+      errorMessage: options?.errorMessage || t<string>('baseService.searchSubDocFail'),
       disableToast: options?.disableToast ?? true,
     });
   }

@@ -40,5 +40,29 @@
         "setting":"Settings",
         "account":"Accounts",
         "helper":"Help"
+      },
+      "baseService": {
+        "setDocComplete": "Document created successfully",
+        "setDocFail": "Failed to create document",
+        "addDocComplete": "Document added successfully",
+        "addDocFail": "Failed to add document",
+        "updateDocComplete": "Document updated successfully",
+        "updateDocFail": "Failed to update document",
+        "deleteDocComplete": "Document deleted successfully",
+        "deleteDocFail": "Failed to delete document",
+        "getDocComplete": "Document retrieved successfully",
+        "getDocFail": "Failed to retrieve document",
+        "searchDocComplete": "Documents searched successfully",
+        "searchDocFail": "Failed to search documents",
+        "addSubDocComplete": "Sub-document added successfully",
+        "addSubDocFail": "Failed to add sub-document",
+        "updateSubDocComplete": "Sub-document updated successfully",
+        "updateSubDocFail": "Failed to update sub-document",
+        "deleteSubDocComplete": "Sub-document deleted successfully",
+        "deleteSubDocFail": "Failed to delete sub-document",
+        "getSubDocComplete": "Sub-document retrieved successfully",
+        "getSubDocFail": "Failed to retrieve sub-document",
+        "searchSubDocComplete": "Sub-documents searched successfully",
+        "searchSubDocFail": "Failed to search sub-documents"
       }
 }
