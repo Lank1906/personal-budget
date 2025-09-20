@@ -12,6 +12,7 @@ const LoginPage = lazy(() => import('../pages/LoginPage'));
 const NotFoundPage = lazy(() => import('../pages/NotFoundPage'));
 const HomePage = lazy(() => import('../pages/HomePage'));
 const TransactionPage = lazy(() => import('../pages/TransactionPage'));
+const CategoryPage = lazy(() => import('../pages/CategoryPage'));
 
 const AppRouter: React.FC = () => {
   const { user } = useSelector((state: RootState) => state.user);
@@ -49,6 +50,7 @@ const AppRouter: React.FC = () => {
             <Route path="/user" element={<MainLayout />}>
               <Route index element={<HomePage />} />
               <Route path="transactions" element={<TransactionPage />} />
+              <Route path="categories" element={<CategoryPage />} />
             </Route>
           </Route>
 

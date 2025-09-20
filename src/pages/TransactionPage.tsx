@@ -74,7 +74,6 @@ export default function TransactionPage() {
 
   return (
     <Box p={3}>
-      {}
       <Box display="flex" justifyContent="space-between" alignItems="center" mb={3}>
         <Typography variant="h5" fontWeight="bold">
           Transactions
@@ -83,8 +82,6 @@ export default function TransactionPage() {
           + Add Transaction
         </Button>
       </Box>
-
-      {}
       <Paper elevation={2}>
         <CustomTable<Transaction>
           columns={columns}
