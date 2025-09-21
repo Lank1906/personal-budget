@@ -317,4 +317,59 @@ export class FirestoreService {
       disableToast: options?.disableToast ?? true,
     });
   }
+
+  getSubCollectionDocs(
+    parentId: string,
+    subCollectionName: string,
+    options?: {
+      limit?: number;
+      orderByField?: string;
+      orderDirection?: 'asc' | 'desc';
+      startAfterDoc?: any;
+      errorMessage?: string;
+      disableToast?: boolean;
+    },
+    callbacks?: Callbacks,
+  ) {
+    return callFirebaseApi({
+      action: async () => {
+        const {
+          limit: pageSize = 10,
+          orderByField = 'createdAt',
+          orderDirection = 'desc',
+          startAfterDoc,
+        } = options || {};
+
+        const colRef = collection(this.firestore, this.collectionName, parentId, subCollectionName);
+
+        let q = query(colRef, orderBy(orderByField, orderDirection), limit(pageSize));
+
+        if (startAfterDoc) {
+          q = query(
+            colRef,
+            orderBy(orderByField, orderDirection),
+            startAfter(startAfterDoc),
+            limit(pageSize),
+          );
+        }
+
+        const querySnap = await getDocs(q);
+
+        if (querySnap.empty) return { docs: [], lastDoc: null };
+
+        const docs = querySnap.docs.map((docSnap) => ({
+          id: docSnap.id,
+          ...docSnap.data(),
+        }));
+
+        const lastDoc = querySnap.docs[querySnap.docs.length - 1];
+
+        return { docs, lastDoc };
+      },
+      failFn: callbacks?.failFn,
+      successFn: callbacks?.successFn,
+      errorMessage: options?.errorMessage || t<string>('baseService.getSubDocsFail'),
+      disableToast: options?.disableToast ?? true,
+    });
+  }
 }
