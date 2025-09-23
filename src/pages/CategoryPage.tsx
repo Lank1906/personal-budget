@@ -27,6 +27,9 @@ export default function CategoryPage() {
     name: string;
     budget: number;
     type: string;
+    createdAt: Date;
+    createdBy: string;
+    spent: number;
   };
   const [open, setOpen] = useState(false);
   const [editingCategory, setEditingCategory] = useState<Category | undefined>();
@@ -50,9 +53,16 @@ export default function CategoryPage() {
       setData(result.data.docs);
     }
   };
-  const handleSubmit = () => {
-    if (!editingCategory) return;
-    categoryService.addSubCollectionDoc(userInfo.current.groups[0], 'categories', editingCategory);
+  const handleSubmit = async (data: Category) => {
+    if (!data) return;
+    const newData: Category = {
+      ...data,
+      createdAt: new Date(),
+      createdBy: user?.email || '',
+      spent: data.spent ?? 0,
+    };
+    await categoryService.addSubCollectionDoc(userInfo.current.groups[0], 'categories', newData);
+    setOpen(false);
     setEditingCategory(undefined);
   };
   useEffect(() => {
@@ -76,7 +86,7 @@ export default function CategoryPage() {
         initialData={editingCategory}
         fields={fields}
         onClose={() => setOpen(false)}
-        onSubmit={handleSubmit}
+        onSubmit={(editingCategory) => handleSubmit(editingCategory)}
         title={editingCategory ? 'Edit Category' : 'Add Category'}
         confirmText={editingCategory ? 'Update' : 'Create'}
       />
