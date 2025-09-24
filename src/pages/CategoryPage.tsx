@@ -1,4 +1,4 @@
-import { Box, Button, Paper, Typography } from '@mui/material';
+import { Box, Button, IconButton, Paper, Typography } from '@mui/material';
 import React, { useEffect, useRef, useState } from 'react';
 import CustomTable from '../components/CustomTable';
 import { FirestoreService } from '../apis/serviceBase';
@@ -7,6 +7,9 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../store';
 import { FieldConfig } from '../types/form';
 import RowFormModal from '../components/FormModal';
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
+import { Timestamp } from 'firebase/firestore';
 
 export default function CategoryPage() {
   const columns = [
@@ -55,15 +58,38 @@ export default function CategoryPage() {
   };
   const handleSubmit = async (data: Category) => {
     if (!data) return;
-    const newData: Category = {
+
+    const payload = {
       ...data,
-      createdAt: new Date(),
-      createdBy: user?.email || '',
+      createdAt: data.createdAt || Timestamp.now(),
+      createdBy: data.createdBy || user?.email || '',
       spent: data.spent ?? 0,
     };
-    await categoryService.addSubCollectionDoc(userInfo.current.groups[0], 'categories', newData);
+
+    if (data.id) {
+      await categoryService.updateSubCollectionDoc(
+        userInfo.current.groups[0],
+        'categories',
+        data.id,
+        payload,
+      );
+    } else {
+      await categoryService.addSubCollectionDoc(userInfo.current.groups[0], 'categories', payload);
+    }
+
     setOpen(false);
     setEditingCategory(undefined);
+  };
+
+  const handleDelete = (id: number) => {
+    if (window.confirm('Delete this transaction?')) {
+      setData((d) => d.filter((row) => row.id !== id));
+    }
+  };
+
+  const handleEdit = (row: Category) => {
+    setEditingCategory(row);
+    setOpen(true);
   };
   useEffect(() => {
     fetchData();
@@ -79,7 +105,22 @@ export default function CategoryPage() {
         </Button>
       </Box>
       <Paper elevation={2}>
-        <CustomTable columns={columns} data={data} selectable searchable />
+        <CustomTable
+          columns={columns}
+          data={data}
+          selectable
+          searchable
+          rowActions={(row) => (
+            <Box display="flex" gap={1}>
+              <IconButton color="primary" onClick={() => handleEdit(row)} size="small">
+                <EditIcon fontSize="small" />
+              </IconButton>
+              <IconButton color="error" onClick={() => handleDelete(row.id)} size="small">
+                <DeleteIcon fontSize="small" />
+              </IconButton>
+            </Box>
+          )}
+        />
       </Paper>
       <RowFormModal<Category>
         open={open}
