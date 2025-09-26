@@ -1,4 +1,4 @@
-import { auth } from '../firebase';
+import { auth, db } from '../firebase';
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
@@ -17,6 +17,8 @@ import { CallApiOption } from '../types/api';
 import { ApiResult } from '../types/apiResult';
 import i18n from '../i18n';
 import { EXP_KEY } from '../constants';
+import { userInfo } from '../types/user';
+import { doc, getDoc as fbGetDoc } from 'firebase/firestore';
 
 export class FirebaseAuthService {
   register(email: string, password: string, options?: CallApiOption<User>): ApiResult<User> {
@@ -95,6 +97,22 @@ export class FirebaseAuthService {
 
   getCurrentUser(): User | null {
     return auth.currentUser;
+  }
+
+  getUserInfo(email: string, options?: CallApiOption<userInfo>): ApiResult<userInfo> {
+    return callFirebaseApi({
+      action: async () => {
+        const docRef = doc(db, 'users', email);
+        const docSnap = await fbGetDoc(docRef);
+        if (!docSnap.exists()) return null;
+        return { id: docSnap.id, ...docSnap.data() };
+      },
+      successFn: () => {
+        options?.successFn;
+      },
+      failFn: options?.failFn,
+      disableToast: false,
+    });
   }
 
   async loginOrRegisterSuccess() {

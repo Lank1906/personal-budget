@@ -1,65 +1,39 @@
 import { Box, Button, IconButton, Paper, Typography } from '@mui/material';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import CustomTable from '../components/CustomTable';
 import { FirestoreService } from '../apis/serviceBase';
 import { db } from '../firebase';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../store';
-import { FieldConfig } from '../types/form';
 import RowFormModal from '../components/FormModal';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { Timestamp } from 'firebase/firestore';
 import { openConfirm } from '../store/slices/confirmSlice';
+import { Category, columns, fields } from '../types/type';
 
 export default function CategoryPage() {
-  const columns = [
-    { key: 'icon', header: 'Icon', sortTable: true },
-    { key: 'name', header: 'Name', sortTable: true },
-    { key: 'budget', header: 'Budget', sortTable: true },
-    { key: 'type', header: 'Type', sortTable: true },
-  ];
-  const fields: FieldConfig[] = [
-    { key: 'icon', label: 'Icon', type: 'text' },
-    { key: 'name', label: 'Name', type: 'text' },
-    { key: 'budget', label: 'Budget', type: 'number' },
-    { key: 'type', label: 'Type', type: 'select', options: ['income', 'expense'] },
-  ];
-  type Category = {
-    id: string;
-    icon: string;
-    name: string;
-    budget: number;
-    type: string;
-    createdAt: Date;
-    createdBy: string;
-    spent: number;
-  };
   const [open, setOpen] = useState(false);
   const [editingCategory, setEditingCategory] = useState<Category | undefined>();
   const categoryService = new FirestoreService(db, 'groups');
-  const userService = new FirestoreService(db, 'users');
   const [data, setData] = useState<any[]>([]);
-  const { user } = useSelector((state: RootState) => state.user);
-  const userInfo = useRef<any>();
+  const [groupId, setGroupId] = useState<string>('');
+  const { user, info } = useSelector((state: RootState) => state.user);
   const dispatch = useDispatch<AppDispatch>();
-  const fetchData = async () => {
-    if (!user?.email) {
-      return;
-    }
-    const userDoc = await userService.getDoc(user.email);
-    userInfo.current = userDoc?.data;
-    const result = await categoryService.getSubCollectionDocs(
-      userInfo.current?.groups[0],
-      'categories',
-    );
 
+  const fetchData = async () => {
+    const gid = info?.groups?.[0];
+    if (!user?.email || !gid) return;
+
+    const result = await categoryService.getSubCollectionDocs(gid, 'categories');
     if (result.success && result.data) {
       setData(result.data.docs);
+      setGroupId(info.groups[0]);
     }
   };
+
   const handleSubmit = async (data: Category) => {
-    if (!data) return;
+    if (!data || !groupId) return;
 
     const payload = {
       ...data,
@@ -69,14 +43,9 @@ export default function CategoryPage() {
     };
 
     if (data.id) {
-      await categoryService.updateSubCollectionDoc(
-        userInfo.current.groups[0],
-        'categories',
-        data.id,
-        payload,
-      );
+      await categoryService.updateSubCollectionDoc(groupId, 'categories', data.id, payload);
     } else {
-      await categoryService.addSubCollectionDoc(userInfo.current.groups[0], 'categories', payload);
+      await categoryService.addSubCollectionDoc(groupId, 'categories', payload);
     }
 
     setOpen(false);
@@ -89,7 +58,7 @@ export default function CategoryPage() {
         title: 'Delete Confirm',
         description: 'Are you sure to delete ' + row.name + '!',
         onConfirm: () => {
-          categoryService.deleteSubCollectionDoc(userInfo.current.groups[0], 'categories', row.id);
+          categoryService.deleteSubCollectionDoc(groupId, 'categories', row.id);
         },
       }),
     );

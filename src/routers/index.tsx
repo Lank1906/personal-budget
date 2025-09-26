@@ -15,7 +15,7 @@ const TransactionPage = lazy(() => import('../pages/TransactionPage'));
 const CategoryPage = lazy(() => import('../pages/CategoryPage'));
 
 const AppRouter: React.FC = () => {
-  const { user } = useSelector((state: RootState) => state.user);
+  const { user, info } = useSelector((state: RootState) => state.user);
   const dispatch = useDispatch<AppDispatch>();
 
   useEffect(() => {
@@ -26,7 +26,7 @@ const AppRouter: React.FC = () => {
         dispatch(logout({ successFn: () => (window.location.href = '/login') }));
         dispatch(setUser(null));
       } else {
-        dispatch(setUser(currentUser));
+        dispatch(setUser({ user: currentUser, info }));
       }
     });
 
