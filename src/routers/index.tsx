@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../store';
 import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from '../firebase';
-import { logout, setUser } from '../store/slices/userSlice';
+import { getInfo, logout, setUser } from '../store/slices/userSlice';
 
 const LoginPage = lazy(() => import('../pages/LoginPage'));
 const NotFoundPage = lazy(() => import('../pages/NotFoundPage'));
@@ -25,8 +25,9 @@ const AppRouter: React.FC = () => {
       if (expireAt && Date.now() > Number(expireAt)) {
         dispatch(logout({ successFn: () => (window.location.href = '/login') }));
         dispatch(setUser(null));
-      } else {
+      } else if (currentUser?.email) {
         dispatch(setUser({ user: currentUser, info }));
+        dispatch(getInfo(currentUser.email));
       }
     });
 

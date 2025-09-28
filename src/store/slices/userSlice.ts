@@ -76,6 +76,12 @@ export const logout = createAsyncThunk<null, CallApiOption>(
   },
 );
 
+export const getInfo = createAsyncThunk('user/info', async (email: string, { rejectWithValue }) => {
+  const res = await authService.getUserInfo(email);
+  if (res.success) return res.data;
+  else return rejectWithValue(res.error);
+});
+
 export const currentUser = createAsyncThunk<null, CallApiOption>(
   'user/current',
   async (options, { rejectWithValue }) => {
@@ -118,6 +124,13 @@ const userSlice = createSlice({
         if (!action.payload) return;
         state.user = action.payload.user;
         state.info = action.payload.info;
+      },
+    );
+    builder.addCase(
+      getInfo.fulfilled,
+      (state: userState, action: PayloadAction<userInfo | null>) => {
+        if (!action.payload) return;
+        state.info = action.payload;
       },
     );
     builder.addCase(logout.fulfilled, (state: userState) => {
