@@ -1,4 +1,4 @@
-import React, { Suspense, lazy, useEffect } from 'react';
+import React, { Suspense, lazy, useEffect, useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import PrivateRoute from './PrivateRoute';
 import MainLayout from '../layouts';
@@ -16,6 +16,7 @@ const CategoryPage = lazy(() => import('../pages/CategoryPage'));
 
 const AppRouter: React.FC = () => {
   const { user, info } = useSelector((state: RootState) => state.user);
+  const [authChecked, setAuthChecked] = useState(false);
   const dispatch = useDispatch<AppDispatch>();
 
   useEffect(() => {
@@ -29,10 +30,14 @@ const AppRouter: React.FC = () => {
         dispatch(setUser({ user: currentUser, info }));
         dispatch(getInfo(currentUser.email));
       }
+      setAuthChecked(true);
     });
 
     return () => unsubscribe();
   }, []);
+  if (!authChecked) {
+    return <div>Loading...</div>;
+  }
   const userRole = user?.email ? 'user' : 'no login';
 
   return (
