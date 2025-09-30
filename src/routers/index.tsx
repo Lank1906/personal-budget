@@ -7,6 +7,7 @@ import { AppDispatch, RootState } from '../store';
 import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from '../firebase';
 import { getInfo, logout, setUser } from '../store/slices/userSlice';
+import Loading from '../components/Loading';
 
 const LoginPage = lazy(() => import('../pages/LoginPage'));
 const NotFoundPage = lazy(() => import('../pages/NotFoundPage'));
@@ -36,13 +37,13 @@ const AppRouter: React.FC = () => {
     return () => unsubscribe();
   }, []);
   if (!authChecked) {
-    return <div>Loading...</div>;
+    return <Loading />;
   }
   const userRole = user?.email ? 'user' : 'no login';
 
   return (
     <Router>
-      <Suspense fallback={<div>Loading...</div>}>
+      <Suspense fallback={<Loading />}>
         <Routes>
           <Route path="/login" element={<LoginPage />} />
 

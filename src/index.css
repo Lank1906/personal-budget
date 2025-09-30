@@ -266,3 +266,88 @@ body.theme-dark select {
 .mt-lg {
   margin-top: var(--spacing-lg);
 }
+
+.loading > .container-loading {
+  position: relative;
+  height: 10px;
+  width: 80px;
+}
+
+.loading > .container-loading > span {
+  height: 100%;
+  aspect-ratio: 1/1;
+  background-color: var(--color-bg-dark);
+  border-radius: 4px;
+  animation: animate4 4s cubic-bezier(0.95, 0.02, 0.14, 0.98) infinite;
+  animation-delay: calc(4s / var(--index-i4));
+  position: absolute;
+}
+
+@keyframes animate4 {
+  0%, 100% {
+    left: 0%;
+    top: 0%;
+    transform: scaleY(1);
+    width: 80%;
+  }
+  6.25% {
+    left: 0%;
+    top: 0%;
+    transform: scaleY(1);
+    width: 15%;
+  }
+  12.5% {
+    left: 12.5%;
+    top: -100%;
+    transform: scaleY(1);
+    width: 15%;
+  }
+  25% {
+    left: 25%;
+    top: -200%;
+    transform: scaleY(1);
+    width: 15%;
+  }
+  30% {
+    left: 37.5%;
+    top: -100%;
+    transform: scaleY(0.8);
+    width: 15%;
+  }
+  35% {
+    left: 50%;
+    top: -300%;
+    transform: scaleY(1);
+    width: 15%;
+  }
+  40% {
+    left: 75%;
+    top: -100%;
+    transform: scaleY(0.8);
+    width: 15%;
+  }
+  45% {
+    left: 90%;
+    top: -100%;
+    transform: scaleY(1);
+    width: 15%;
+  }
+  50% {
+    right: 0%;
+    top: 0%;            
+    transform: scaleY(1);
+    width: 15%;
+  }
+  55% {
+    right: 0;
+    top: 0%;            
+    transform: scaleY(1);
+    width: 15%;
+  }
+  90% {
+    right:0;
+    top: 0%;            
+    transform: scaleY(1);
+    width: 80%;
+  }
+}
