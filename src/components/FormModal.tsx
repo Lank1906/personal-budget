@@ -10,6 +10,7 @@ import {
   Typography,
   Box,
 } from '@mui/material';
+import { useGlobalLoading } from '../hooks/useGlobalLoading';
 
 export type FieldConfig = {
   key: string;
@@ -39,6 +40,7 @@ export default function RowFormModal<T extends Record<string, any>>({
   confirmText = 'Lưu',
 }: RowFormModalProps<T>) {
   const [form, setForm] = useState<T>((initialData as T) || ({} as T));
+  const loading = useGlobalLoading();
 
   useEffect(() => {
     setForm(initialData || ({} as T));
@@ -101,7 +103,12 @@ export default function RowFormModal<T extends Record<string, any>>({
         <Button onClick={onClose} color="inherit">
           Hủy
         </Button>
-        <Button variant="contained" color="primary" onClick={() => onSubmit(form)}>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={() => onSubmit(form)}
+          disabled={loading}
+        >
           {confirmText}
         </Button>
       </DialogActions>
