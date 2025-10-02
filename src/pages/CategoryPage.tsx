@@ -60,13 +60,18 @@ export default function CategoryPage() {
     setOpen(true);
   };
 
+  const handleAdd = () => {
+    setEditingCategory(undefined);
+    setOpen(true);
+  };
+
   return (
     <Box p={3}>
       <Box display="flex" justifyContent="space-between" alignItems="center" mb={3}>
         <Typography variant="h5" fontWeight="bold">
           Category (20)
         </Typography>
-        <Button variant="contained" color="success" onClick={() => setOpen(true)}>
+        <Button variant="contained" color="success" onClick={handleAdd}>
           + Add Category
         </Button>
       </Box>

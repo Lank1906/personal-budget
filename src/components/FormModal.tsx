@@ -9,6 +9,7 @@ import {
   Grid,
   Typography,
   Box,
+  MenuItem,
 } from '@mui/material';
 import { useGlobalLoading } from '../hooks/useGlobalLoading';
 
@@ -62,20 +63,38 @@ export default function RowFormModal<T extends Record<string, any>>({
           <Typography fontWeight={600} mb={0.5} sx={{ color: 'inherit' }}>
             {field.label}
           </Typography>
-          <TextField
-            fullWidth
-            type={field.type === 'password' ? 'password' : field.type || 'text'}
-            placeholder={field.placeholder}
-            size="small"
-            variant="outlined"
-            value={value}
-            onChange={(e) =>
-              handleChange(
-                field.key,
-                field.type === 'number' ? Number(e.target.value) : e.target.value,
-              )
-            }
-          />
+
+          {field.type === 'select' ? (
+            <TextField
+              fullWidth
+              select
+              size="small"
+              variant="outlined"
+              value={value}
+              onChange={(e) => handleChange(field.key, e.target.value)}
+            >
+              {field.options?.map((opt) => (
+                <MenuItem key={opt} value={opt}>
+                  {opt}
+                </MenuItem>
+              ))}
+            </TextField>
+          ) : (
+            <TextField
+              fullWidth
+              type={field.type === 'password' ? 'password' : field.type || 'text'}
+              placeholder={field.placeholder}
+              size="small"
+              variant="outlined"
+              value={value}
+              onChange={(e) =>
+                handleChange(
+                  field.key,
+                  field.type === 'number' ? Number(e.target.value) : e.target.value,
+                )
+              }
+            />
+          )}
         </Box>
       </Grid>
     );

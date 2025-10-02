@@ -267,6 +267,13 @@ body.theme-dark select {
   margin-top: var(--spacing-lg);
 }
 
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
 .loading > .container-loading {
   position: relative;
   height: 10px;
@@ -284,7 +291,8 @@ body.theme-dark select {
 }
 
 @keyframes animate4 {
-  0%, 100% {
+  0%,
+  100% {
     left: 0%;
     top: 0%;
     transform: scaleY(1);
@@ -334,19 +342,19 @@ body.theme-dark select {
   }
   50% {
     right: 0%;
-    top: 0%;            
+    top: 0%;
     transform: scaleY(1);
     width: 15%;
   }
   55% {
     right: 0;
-    top: 0%;            
+    top: 0%;
     transform: scaleY(1);
     width: 15%;
   }
   90% {
-    right:0;
-    top: 0%;            
+    right: 0;
+    top: 0%;
     transform: scaleY(1);
     width: 80%;
   }
