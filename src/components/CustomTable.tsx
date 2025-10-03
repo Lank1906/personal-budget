@@ -11,11 +11,11 @@ import {
   TableHead,
   TablePagination,
   TableRow,
-  TextField,
   Typography,
 } from '@mui/material';
 import { ArrowUpward, ArrowDownward, SwapVert } from '@mui/icons-material';
 import { Column, CustomTableProps, Row } from '../types/table';
+import SearchBox from './Search';
 
 export default function CustomTable<RowType extends Row>({
   columns,
@@ -103,15 +103,11 @@ export default function CustomTable<RowType extends Row>({
 
   return (
     <Paper>
-      {}
       <Box p={2} display="flex" justifyContent="space-between" alignItems="center">
         {searchable && (
-          <TextField
-            size="small"
-            label="Search"
-            value={query}
-            onChange={(e) => {
-              setQuery(e.target.value);
+          <SearchBox
+            onSearch={(e) => {
+              setQuery(e);
               setPage(0);
             }}
           />
@@ -179,7 +175,6 @@ export default function CustomTable<RowType extends Row>({
         </Table>
       </TableContainer>
 
-      {}
       <TablePagination
         component="div"
         count={sorted.length}

@@ -22,3 +22,8 @@ export type CustomTableProps<RowType extends Row> = {
   rowKey?: (row: RowType) => string | number;
   rowActions?: (row: RowType) => React.ReactNode;
 };
+
+export interface SearchBoxProps {
+  placeholder?: string;
+  onSearch: (query: string) => void;
+}
