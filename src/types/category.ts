@@ -11,6 +11,12 @@ export type Category = {
   spent: number;
 };
 
+export interface CategoryCardProps {
+  category: Category;
+  onDelete: (category: Category) => void;
+  onUpdate: (category: Category) => void;
+}
+
 export const columns = [
   { key: 'icon', header: 'Icon', sortTable: true },
   { key: 'name', header: 'Name', sortTable: true },

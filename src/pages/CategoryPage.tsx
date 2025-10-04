@@ -1,19 +1,17 @@
-import { Box, Button, IconButton, Paper, Typography } from '@mui/material';
+import { Box, Button, Grid, Typography } from '@mui/material';
 import React, { useEffect, useState } from 'react';
-import CustomTable from '../components/CustomTable';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../store';
 import RowFormModal from '../components/FormModal';
-import EditIcon from '@mui/icons-material/Edit';
-import DeleteIcon from '@mui/icons-material/Delete';
 import { openConfirm } from '../store/slices/confirmSlice';
-import { Category, columns, fields } from '../types/category';
+import { Category, fields } from '../types/category';
 import {
   createCategory,
   deleteCategory,
   fetchCategories,
   updateCategory,
 } from '../store/slices/categorySlice';
+import CategoryCard from '../components/CategoryCard';
 
 export default function CategoryPage() {
   const [open, setOpen] = useState(false);
@@ -75,24 +73,25 @@ export default function CategoryPage() {
           + Add Category
         </Button>
       </Box>
-      <Paper elevation={2}>
-        <CustomTable
-          columns={columns}
-          data={category}
-          selectable
-          searchable
-          rowActions={(row) => (
-            <Box display="flex" gap={1}>
-              <IconButton color="primary" onClick={() => handleEdit(row)} size="small">
-                <EditIcon fontSize="small" />
-              </IconButton>
-              <IconButton color="error" onClick={() => handleDelete(row)} size="small">
-                <DeleteIcon fontSize="small" />
-              </IconButton>
-            </Box>
-          )}
-        />
-      </Paper>
+      <Box>
+        {category.length === 0 ? (
+          <Typography variant="body1" color="text.secondary">
+            No categories available.
+          </Typography>
+        ) : (
+          <Grid container spacing={0.2}>
+            {category.map((cat) => (
+              <Grid item xs={12} sm={6} md={4} lg={3} key={cat.id}>
+                <CategoryCard
+                  category={cat}
+                  onDelete={() => handleDelete(cat)}
+                  onUpdate={() => handleEdit(cat)}
+                />
+              </Grid>
+            ))}
+          </Grid>
+        )}
+      </Box>
       <RowFormModal<Category>
         open={open}
         initialData={editingCategory}
