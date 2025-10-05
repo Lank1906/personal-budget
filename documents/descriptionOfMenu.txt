@@ -1,0 +1,10 @@
+dasboard:
+transaction: quản lý thông tin giao dịch sẽ được cập nhật đồng thời với wallet.
+category:quản lý thông tin các danh mục tiêu dùng và nhận tiền sử dụng cho các giao dịch. Đây cũng lưu trữ hoạch định tiêu thụ cho từng tháng.
+wallet: là lượng tiền đang có hiện tại mọi giao dịch sẽ trừ tiền ở đây, một người có thể nhiều wallet nên cần dùng option khi thực hiện giao dịch đồng thời cập nhật category. có thể hiện thị tất cả của các người dùng khác
+report: hiện thị các báo cáo chi tiết về giao dịch, danh mục sử dụng tiền và các ví tiết kiệm.
+budget: nơi lưu và quản lý các khoản tiết kiệm đang có.
+goals: nơi quản lý các mục tiêu cần đạt được và lượng tiền cần thiết, tính phần trăm đạt được mục tiêu dựa trên budget.
+setting: nơi lưu trữ cài đặt các config cá nhân khi sử dụng trang web.
+account: nơi cho phép quản lý thông tin cá nhân và hiển thị thông tin các cá nhân liên quan.
+help: một trang web hiển thị các hướng dẫn sử dụng web.
