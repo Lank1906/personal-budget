@@ -1,43 +1,66 @@
-import React, { Suspense, lazy } from 'react';
+import React, { Suspense, lazy, useEffect, useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import PrivateRoute from './PrivateRoute';
+import MainLayout from '../layouts';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '../store';
+import { onAuthStateChanged } from 'firebase/auth';
+import { auth } from '../firebase';
+import { getInfo, logout, setUser } from '../store/slices/userSlice';
+import Loading from '../components/Loading';
 
-const LoginPage = lazy(() => import('../pages/common/LoginPage'));
-const NotFoundPage = lazy(() => import('../pages/common/NotFoundPage'));
-
-const getUserRole = () => {
-  return localStorage.getItem('role');
-};
+const LoginPage = lazy(() => import('../pages/LoginPage'));
+const NotFoundPage = lazy(() => import('../pages/NotFoundPage'));
+const HomePage = lazy(() => import('../pages/HomePage'));
+const TransactionPage = lazy(() => import('../pages/TransactionPage'));
+const CategoryPage = lazy(() => import('../pages/CategoryPage'));
 
 const AppRouter: React.FC = () => {
-  const userRole = getUserRole();
+  const { user, info } = useSelector((state: RootState) => state.user);
+  const [authChecked, setAuthChecked] = useState(false);
+  const dispatch = useDispatch<AppDispatch>();
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
+      const expireAt = localStorage.getItem('auth_expire_at');
+
+      if (expireAt && Date.now() > Number(expireAt)) {
+        dispatch(logout({ successFn: () => (window.location.href = '/login') }));
+        dispatch(setUser(null));
+      } else if (currentUser?.email) {
+        dispatch(setUser({ user: currentUser, info }));
+        dispatch(getInfo(currentUser.email));
+      }
+      setAuthChecked(true);
+    });
+
+    return () => unsubscribe();
+  }, []);
+  if (!authChecked) {
+    return <Loading />;
+  }
+  const userRole = user?.email ? 'user' : 'no login';
 
   return (
     <Router>
-      <Suspense fallback={<div>Loading...</div>}>
+      <Suspense fallback={<Loading />}>
         <Routes>
-          <Route path="/" element />
           <Route path="/login" element={<LoginPage />} />
 
-          {}
-          <Route
-            path="/admin"
-            element={
-              <PrivateRoute element={<LoginPage />} allowedRoles={['admin']} userRole={userRole} />
-            }
-          />
-          <Route
-            path="/user"
-            element={
-              <PrivateRoute
-                element={<NotFoundPage />}
-                allowedRoles={['user', 'admin']}
-                userRole={userRole}
-              />
-            }
-          />
+          <Route element={<PrivateRoute allowedRoles={['admin']} userRole={userRole} />}>
+            <Route path="/admin" element={<MainLayout />}>
+              <Route index element={<HomePage />} />
+            </Route>
+          </Route>
 
-          {}
+          <Route element={<PrivateRoute allowedRoles={['user', 'admin']} userRole={userRole} />}>
+            <Route path="/user" element={<MainLayout />}>
+              <Route index element={<HomePage />} />
+              <Route path="transactions" element={<TransactionPage />} />
+              <Route path="categories" element={<CategoryPage />} />
+            </Route>
+          </Route>
+
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </Suspense>

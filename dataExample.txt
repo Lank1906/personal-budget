@@ -1,0 +1,77 @@
+users (collection)                         👈 Personal user information
+  └── {email}
+        ├── displayName: string
+        ├── photoURL: string
+        ├── groups: array<string>          # List of groupIds the user joined
+        ├── createdAt: timestamp
+        └── updatedAt: timestamp
+
+
+assets (collection)                        👈 Global asset reference (market data)
+  └── {assetId}
+        ├── name: string                   # e.g. "Bitcoin"
+        ├── symbol: string                 # e.g. "BTC"
+        ├── type: string                   # "crypto" | "gold" | "stock" | "saving"
+        ├── unitPrice: number              # current market price
+        ├── updatedAt: timestamp
+
+
+groups (collection)                        👈 A family or group
+  └── {groupId}
+        ├── name: string
+        ├── members: array<string>         # userIds
+        ├── ownerId: string                # who created the group
+        ├── createdAt: timestamp
+        └── updatedAt: timestamp
+        │
+        ├── wallets (collection)           👈 Group wallets (cash, bank accounts, etc.)
+        │     └── {walletId}
+        │           ├── name: string
+        │           ├── balance: number
+        │           ├── currency: string   # e.g. "USD", "VND"
+        │           ├── createdAt: timestamp
+        │           └── createdBy: userId
+        │
+        ├── categories (collection)        👈 Income/Expense categories
+        │     └── {categoryId}
+        │           ├── name: string
+        │           ├── type: string       # "income" | "expense"
+        |           ├── budget: number     # money for this category follow plan
+        |           ├── spent: number      # money used
+        │           ├── icon: string
+        │           ├── createdAt: timestamp
+        │           └── createdBy: userId
+        │
+        ├── transactions (collection)      👈 Income/Expense transactions
+        │     └── {transactionId}
+        │           ├── amount: number
+        │           ├── type: string       # "income" | "expense"
+        │           ├── categoryId: string
+        │           ├── walletId: string
+        │           ├── note: string
+        │           ├── createdBy: userId
+        │           └── createdAt: timestamp
+        │
+        └── assets (collection)            👈 Assets owned by this group
+              └── {groupAssetId}
+                    ├── assetId: string        # reference to assets/{assetId}
+                    ├── quantity: number       # total quantity currently held
+                    ├── createdBy: userId
+                    ├── createdAt: timestamp
+                    ├── updatedAt: timestamp
+                    │
+                    ├── (If type === "saving")
+                    │     ├── principal: number        # initial money
+                    │     ├── interestRate: number     # % per year
+                    │     ├── interestPeriod: string   # "monthly" | "quarterly" | "yearly"
+                    │     ├── startDate: timestamp
+                    │     ├── maturityDate: timestamp
+                    │     └── accruedInterest: number
+                    │
+                    └── transactions (collection)      👈 Buy/Sell/Interest history
+                          └── {assetTxId}
+                                ├── action: string     # "buy" | "sell" | "interest"
+                                ├── quantity: number   # positive for buy, negative for sell
+                                ├── priceAtTransaction: number   # price at the time
+                                ├── date: timestamp
+                                └── createdBy: userId

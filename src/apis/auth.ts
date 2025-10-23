@@ -1,4 +1,4 @@
-import { auth } from '../firebase';
+import { auth, db } from '../firebase';
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
@@ -8,11 +8,17 @@ import {
   User,
   GoogleAuthProvider,
   signInWithPopup,
+  setPersistence,
+  browserLocalPersistence,
 } from 'firebase/auth';
 
 import { callFirebaseApi } from './firebase';
 import { CallApiOption } from '../types/api';
 import { ApiResult } from '../types/apiResult';
+import i18n from '../i18n';
+import { EXP_KEY } from '../constants';
+import { userInfo } from '../types/user';
+import { doc, getDoc as fbGetDoc } from 'firebase/firestore';
 
 export class FirebaseAuthService {
   register(email: string, password: string, options?: CallApiOption<User>): ApiResult<User> {
@@ -20,8 +26,8 @@ export class FirebaseAuthService {
       action: () => createUserWithEmailAndPassword(auth, email, password).then((res) => res.user),
       successFn: options?.successFn,
       failFn: options?.failFn,
-      successMessage: options?.successMessage || 'Đăng ký thành công!',
-      errorMessage: options?.errorMessage || 'Đăng ký thất bại, vui lòng thử lại.',
+      successMessage: options?.successMessage || (i18n.t('login.registerSuccess') as string),
+      errorMessage: options?.errorMessage || (i18n.t('login.registerFail') as string),
       disableToast: options?.disableToast ?? false,
     });
   }
@@ -31,8 +37,8 @@ export class FirebaseAuthService {
       action: () => signInWithEmailAndPassword(auth, email, password).then((res) => res.user),
       successFn: options?.successFn,
       failFn: options?.failFn,
-      successMessage: options?.successMessage || 'Đăng nhập thành công!',
-      errorMessage: options?.errorMessage || 'Đăng nhập thất bại, vui lòng kiểm tra lại.',
+      successMessage: options?.successMessage || (i18n.t('login.loginSuccess') as string),
+      errorMessage: options?.errorMessage || (i18n.t('login.loginFail') as string),
       disableToast: options?.disableToast ?? false,
     });
   }
@@ -43,8 +49,8 @@ export class FirebaseAuthService {
       action: () => signInWithPopup(auth, provider).then((res) => res.user),
       successFn: options?.successFn,
       failFn: options?.failFn,
-      successMessage: options?.successMessage || 'Đăng nhập với Google thành công!',
-      errorMessage: options?.errorMessage || 'Đăng nhập với Google thất bại.',
+      successMessage: options?.successMessage || (i18n.t('login.loginWithGoogleSuccess') as string),
+      errorMessage: options?.errorMessage || (i18n.t('login.loginWithGoogleFail') as string),
       disableToast: options?.disableToast ?? false,
     });
   }
@@ -58,8 +64,8 @@ export class FirebaseAuthService {
       },
       successFn: options?.successFn,
       failFn: options?.failFn,
-      successMessage: options?.successMessage || 'Đổi mật khẩu thành công!',
-      errorMessage: options?.errorMessage || 'Đổi mật khẩu thất bại.',
+      successMessage: options?.successMessage || (i18n.t('login.changePasswordSuccess') as string),
+      errorMessage: options?.errorMessage || (i18n.t('login.changePasswordFail') as string),
       disableToast: options?.disableToast ?? false,
     });
   }
@@ -69,8 +75,8 @@ export class FirebaseAuthService {
       action: () => sendPasswordResetEmail(auth, email),
       successFn: options?.successFn,
       failFn: options?.failFn,
-      successMessage: options?.successMessage || 'Email đặt lại mật khẩu đã được gửi!',
-      errorMessage: options?.errorMessage || 'Gửi email đặt lại mật khẩu thất bại.',
+      successMessage: options?.successMessage || (i18n.t('login.resetPasswordEmailSent') as string),
+      errorMessage: options?.errorMessage || (i18n.t('login.resetPasswordEmailFail') as string),
       disableToast: options?.disableToast ?? false,
     });
   }
@@ -78,15 +84,40 @@ export class FirebaseAuthService {
   logout(options?: CallApiOption<void>): ApiResult<void> {
     return callFirebaseApi({
       action: () => signOut(auth),
-      successFn: options?.successFn,
+      successFn: () => {
+        options?.successFn;
+        localStorage.removeItem(EXP_KEY);
+      },
       failFn: options?.failFn,
-      successMessage: options?.successMessage || 'Đăng xuất thành công!',
-      errorMessage: options?.errorMessage || 'Đăng xuất thất bại.',
+      successMessage: options?.successMessage || (i18n.t('login.logoutSuccess') as string),
+      errorMessage: options?.errorMessage || (i18n.t('login.logoutFail') as string),
       disableToast: options?.disableToast ?? false,
     });
   }
 
   getCurrentUser(): User | null {
     return auth.currentUser;
+  }
+
+  getUserInfo(email: string, options?: CallApiOption<userInfo>): ApiResult<userInfo> {
+    return callFirebaseApi({
+      action: async () => {
+        const docRef = doc(db, 'users', email);
+        const docSnap = await fbGetDoc(docRef);
+        if (!docSnap.exists()) return null;
+        return { id: docSnap.id, ...docSnap.data() };
+      },
+      successFn: () => {
+        options?.successFn;
+      },
+      failFn: options?.failFn,
+      disableToast: false,
+    });
+  }
+
+  async loginOrRegisterSuccess() {
+    await setPersistence(auth, browserLocalPersistence);
+    const expireAt = Date.now() + 7 * 24 * 60 * 60 * 1000;
+    localStorage.setItem(EXP_KEY, expireAt.toString());
   }
 }

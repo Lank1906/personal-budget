@@ -1,46 +1,44 @@
-# Getting Started with Create React App
+🏠 Dashboard (Trang chủ / Tổng quan)
+Hiển thị tổng quan tài chính hiện tại:
+Tổng thu nhập, tổng chi tiêu trong tháng.
+Biểu đồ tròn/đường để xem tỷ lệ chi tiêu theo danh mục (ăn uống, nhà ở, giải trí, v.v.).
+Dòng tiền (cash flow) dương/âm.
+Mục đích: giúp người dùng nhìn nhanh tình hình tài chính ngay khi đăng nhập.
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+💸 Giao dịch (Transactions)
+Quản lý các khoản thu và chi hằng ngày.
+Chức năng:
+Thêm giao dịch mới (thu nhập hoặc chi tiêu).
+Phân loại (ví dụ: ăn uống, đi lại, lương, quà tặng...).
+Ghi chú / đính kèm hóa đơn.
+Tìm kiếm & lọc theo ngày, danh mục.
+Mục đích: giúp người dùng theo dõi chi tiết dòng tiền hằng ngày.
 
-## Available Scripts
+📊 Ngân sách (Budget)
+Quản lý hạn mức chi tiêu cho từng danh mục
+Ví dụ: đặt hạn mức "Ăn uống = 5tr/tháng".
+Khi chi tiêu gần hết ngân sách → cảnh báo.
+Mục đích: giúp kiểm soát chi tiêu và tránh vượt quá kế hoạch.
 
-In the project directory, you can run:
+🎯 Mục tiêu (Goals)
+Đặt và theo dõi mục tiêu tài chính:
+Ví dụ: tiết kiệm 100 triệu để mua xe trong 12 tháng.
+Tự động tính toán: cần tiết kiệm bao nhiêu mỗi tháng.
+Hiển thị tiến độ (% đã đạt được).
+Mục đích: giúp người dùng có động lực và kế hoạch tài chính dài hạn.
 
-### `npm start`
+📈 Báo cáo (Reports)
+Tạo các báo cáo chi tiết về thu nhập & chi tiêu.
+Dạng biểu đồ: cột, đường, donut.
+Có thể lọc theo khoảng thời gian (tháng, quý, năm).
+Xu hướng: so sánh với tháng trước, năm trước.
+Mục đích: giúp phân tích thói quen tài chính, từ đó điều chỉnh hợp lý.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
-
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+⚙️ Cài đặt (Settings)
+Quản lý thông tin & cá nhân hóa:
+Hồ sơ cá nhân (tên, email, avatar).
+Đơn vị tiền tệ (VNĐ, USD...).
+Ngôn ngữ (đa ngôn ngữ nếu cần).
+Bật/tắt dark mode.
+Quản lý tài khoản (đăng nhập, đăng xuất, đổi mật khẩu).
+Mục đích: giúp người dùng tùy chỉnh trải nghiệm phù hợp nhu cầu.

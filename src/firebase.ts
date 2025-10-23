@@ -1,4 +1,4 @@
-import { initializeApp } from 'firebase/app';
+import { initializeApp, getApps } from 'firebase/app';
 //import { getAnalytics } from 'firebase/analytics';
 import { getFirestore } from 'firebase/firestore';
 import { getAuth } from 'firebase/auth';
@@ -12,7 +12,7 @@ const firebaseConfig = {
   appId: process.env.REACT_APP_APP_ID,
 };
 
-const app = initializeApp(firebaseConfig);
+const app = !getApps().length ? initializeApp(firebaseConfig) : getApps()[0];
 //const analytics = getAnalytics(app);
 export const auth = getAuth(app);
 export const db = getFirestore(app);
